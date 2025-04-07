@@ -1,0 +1,108 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}About | North Hiking{% endblock %}
+
+{% block content %}
+<main>
+    <section class="members">
+        <div class="container">
+
+            <div class="normal_title">
+                <h2 id="team-title">Our Team</h2>
+            </div>
+
+            <div class="row justify-content-center">
+                <p class="justify" aria-labelledby="team-title">
+                    Our team is a dedicated group of passionate individuals united by a love for adventure, the outdoors, 
+                    and delivering exceptional experiences. With diverse backgrounds in technology, design, finance, and 
+                    creativity, we bring a wealth of expertise to the table, ensuring that every aspect of our platform is 
+                    crafted with care and precision. Our first priority is to provide our clients with the best possible 
+                    experience, offering expert tips, curated hiking routes, and personalized adventure planning. 
+                    We are committed to helping you explore nature's beauty in a way that is both thrilling and unforgettable, 
+                    whether you're embarking on your first hike or looking for new challenges to conquer. Together, we strive 
+                    to create meaningful and memorable journeys for every adventurer.
+                </p>
+            </div>
+
+            <hr>
+
+            <!-- Team Member: Panos -->
+            <div class="row justify-content-center">
+                <div class="col-xxl-5 col-xl-5 col-md-5 col-sm-12 my-3 mx-auto">
+                    <div class="panos-img" aria-labelledby="panos-name">
+                        <img src="{% static 'images/Our_Team/Panos.jpg' %}" class="img-fluid rounded-5" alt="Portrait of Panos, Founder of the team.">
+                    </div>
+                </div>
+                <div class="col-xxl-5 col-xl-5 col-md-5 col-sm-12 my-3 mx-auto">
+                    <h3 id="panos-name">Panos (Founder)</h3>
+                    <p class="justify">Meet Panos, the founder of this website, a computer science student and a passionate 
+                        hiker with over 10 years of experience exploring nature’s most breathtaking trails. Combining his 
+                        love for technology and the outdoors, Panos created this platform to share his knowledge, inspire 
+                        adventure, and help others experience the beauty of hiking. Whether you're a beginner looking for 
+                        guidance or an experienced trekker seeking new challenges, this site is designed to provide 
+                        expert tips, curated routes, and personalized hiking experiences.</p>
+                </div>
+
+                <hr>
+
+                <!-- Team Member: Andreas -->
+                <div class="col-xxl-5 col-xl-5 col-md-5 col-sm-12 my-3 mx-auto">
+                    <div class="andreas-img" aria-labelledby="andreas-name">
+                        <img src="{% static 'images/Our_Team/Andreas.jpg' %}" class="img-fluid rounded-5" alt="Portrait of Andreas, Coordinator of the team.">
+                    </div>
+                </div>
+                <div class="col-xxl-5 col-xl-5 col-md-5 col-sm-12 my-3 mx-auto">
+                    <h3 id="andreas-name">Andreas (Coordinator)</h3>
+                    <p class="justify">The first member to join the team, Andreas is not only an architect but also Panos's 
+                        best friend since childhood. Growing up together, their shared love for adventure and the outdoors 
+                        led them to explore countless trails side by side. With his keen eye for design and deep appreciation 
+                        for natural landscapes, Andreas brings a unique perspective to the team, helping craft unforgettable 
+                        hiking experiences that blend adventure with aesthetic beauty.</p>
+                </div>
+
+                <hr>
+
+                <!-- Team Member: Padelis -->
+                <div class="col-xxl-5 col-xl-5 col-md-5 col-sm-12 my-3 mx-auto">
+                    <div class="pandelis-img" aria-labelledby="pandelis-name">
+                        <img src="{% static 'images/Our_Team/Pandelis.jpg' %}" class="img-fluid rounded-5" alt="Portrait of Pandelis, Finance Manager of the team.">
+                    </div>
+                </div>
+                <div class="col-xxl-5 col-xl-5 col-md-5 col-sm-12 my-3 mx-auto">
+                    <h3 id="pandelis-name">Padelis (Finance Manager)</h3>
+                    <p class="justify">Padelis is a young and ambitious entrepreneur with a passion for sports and hiking. 
+                        With a background in finance and business management, he plays a crucial role in overseeing the 
+                        financial operations of the company, ensuring its long-term stability and growth. Beyond his 
+                        expertise in economics, Padelis is an avid outdoor enthusiast who enjoys discovering new hiking 
+                        trails. His love for adventure aligns perfectly with the company’s mission, as he actively 
+                        contributes ideas on how to improve and expand the platform.</p>
+                </div>
+
+                <hr>
+
+                <!-- Team Member: Nikolas -->
+                <div class="col-xxl-5 col-xl-5 col-md-5 col-sm-12 my-3 mx-auto">
+                    <div class="nikolas-img" aria-labelledby="nikolas-name">
+                        <img src="{% static 'images/Our_Team/Nikolas.jpg' %}" class="img-fluid rounded-5" alt="Portrait of Nikolas, Creative Director of the team.">
+                    </div>
+                </div>
+                <div class="col-xxl-5 col-xl-5 col-md-5 col-sm-12 my-3 mx-auto">
+                    <h3 id="nikolas-name">Nikolas (Creative Director)</h3>
+                    <p class="justify">Nikolas is the creative director of the site, bringing bold ideas and a fresh visual 
+                        perspective to everything you see here. A mechanical engineering student based in Northern Greece, 
+                        Nikolas combines technical precision with artistic flair. His lifelong passion for Formula 1 racing 
+                        fuels his drive for innovation and performance, while his love for video games keeps his creativity 
+                        sharp and playful. From designing engaging content to refining the site's visual identity, Nikolas 
+                        plays a key role in shaping the platform’s unique style and ensuring every visitor enjoys an 
+                        inspiring, immersive experience.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+{% endblock %}
+
+{% block extra_scripts %}
+<script src="{% static 'js/black_white_hover.js' %}" defer></script>
+{% endblock %}

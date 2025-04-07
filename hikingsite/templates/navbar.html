@@ -1,0 +1,57 @@
+{% load static %}
+<header>
+    <nav id="navbar" class="navbar navbar-expand-md navbar-light bg-light sticky-top" aria-label="Navigation menu">
+        <div class="container-fluid">
+            <!-- Logo and home link -->
+            <a class="navbar-brand" href="{% url 'home' %}">
+                <img
+                    src="{% static 'images/Site_Logo/logo.png' %}"
+                    data-logo-default="{% static 'images/Site_Logo/logo.png' %}"
+                    data-logo-hover="{% static 'images/Site_Logo/logo-hover.png' %}"
+                    alt="North Hiking Trips Logo"
+                    class="logo-img"
+                >
+            </a>
+
+            <!-- Mobile menu toggle button -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" 
+                aria-controls="navbarSupportedContent" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <!-- Navigation links -->
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav d-flex flex-grow-1 justify-content-between text-center navlinks" role="menu">
+                    <li class="nav-item flex-fill">
+                        <a class="nav-link {% if request.resolver_match.url_name == 'home' %}active{% endif %}" href="{% url 'home' %}" role="menuitem">Home</a>
+                    </li>
+            
+                    <li class="nav-item flex-fill">
+                        <a class="nav-link {% if request.resolver_match.url_name == 'trips' %}active{% endif %}" href="{% url 'trips' %}" role="menuitem">Trips</a>
+                    </li>
+            
+                    <li class="nav-item flex-fill">
+                        <a class="nav-link {% if request.resolver_match.url_name == 'about' %}active{% endif %}" href="{% url 'about' %}" role="menuitem">About</a>
+                    </li>
+            
+                    <li class="nav-item flex-fill">
+                        <a class="nav-link {% if request.resolver_match.url_name == 'contact' %}active{% endif %}" href="{% url 'contact' %}" role="menuitem">Contact</a>
+                    </li>
+                </ul>
+
+                <!-- Dark Mode Toggle -->
+                <div class="dark-mode-container">
+                    <button id="darkModeToggle" class="greenbutton btn" type="button" aria-label="Toggle dark mode">
+                        Dark
+                    </button>
+                </div>
+
+                <!-- Search form -->
+                <form class="d-flex justify-content-center" role="search" aria-label="Site search">
+                    <input class="form-control me-2 searchnav" type="search" placeholder="Search" aria-label="Search query">
+                    <button class="btn btn-outline-success" type="submit" aria-label="Submit search">Search</button>
+                </form>
+            </div>
+        </div>
+    </nav>
+</header>

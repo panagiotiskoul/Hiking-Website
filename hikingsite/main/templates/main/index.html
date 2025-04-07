@@ -1,0 +1,102 @@
+<!-- templates/main/index.html -->
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Main | North Hiking{% endblock %}
+{% block content %}
+
+<!-- All the <section> and content inside <main> from your old index.html -->
+<!-- Keep your hero section, carousel, table, etc. here -->
+
+<main aria-label="Main content">
+    <!-- Hero section with a welcoming message -->
+    <section class="hero-section" aria-labelledby="welcome-heading">
+        <div id="welcome" class="welcome-box rounded-5">
+            <h2 id="welcome-heading">Welcome to North Hiking Adventures</h2>
+            <p>Discover the beauty of Greece through unforgettable hiking experiences! At North Hiking Adventures, we organize guided hiking trips to carefully selected destinations across Greece. From breathtaking mountain trails to scenic coastal paths, our goal is to help you explore nature in the most immersive way.</p>
+            
+            <p>Founded by Panos, a passionate hiker with over 10 years of experience, our company is dedicated to providing safe, well-planned, and memorable hiking adventures. Whether you’re a beginner or an experienced trekker, we have the perfect trail for you!</p>
+                
+            <p>Join us on a journey through Greece’s stunning landscapes and make memories that will last a lifetime. Let’s hike together!</p>
+        </div>
+    </section>
+
+    <!-- Title section for services -->
+    <div class="normal_title" aria-label="Our Services">
+        <h2 class="mt-5">Our Services</h2>
+    </div>
+
+    <!-- Carousel section for showcasing different services -->
+    <div id="carouselExampleCaptions" class="carousel slide" data-bs-ride="false" aria-label="Hiking services carousel">
+        <!-- Carousel indicators for navigation between slides -->
+        <div class="carousel-indicators">
+            <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+            <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="1" aria-label="Slide 2"></button>
+            <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="2" aria-label="Slide 3"></button>
+            <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="3" aria-label="Slide 4"></button>
+            <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="4" aria-label="Slide 5"></button>
+        </div>
+
+        <!-- Carousel inner content displaying each service -->
+        <div class="carousel-inner">
+        
+            <!-- First carousel item: Guided Hiking Trips -->
+            <div class="carousel-item active" aria-label="Guided Hiking Trips">
+                <img src="{% static 'images/carousel/img (1).png' %}" class="d-block w-100 rounded-5" alt="Snowy mountain peaks covered in clouds.">
+                <div class="carousel-caption">
+                    <h4 class="d-block">Guided Hiking Trips</h4>
+                    <p class="d-none d-md-block">Explore Greece’s most breathtaking trails with our expert-led guided hikes. Each trip is carefully planned to ensure a safe and unforgettable experience. Whether you prefer mountain adventures, forest trails, or coastal paths, we have the perfect route for you.</p>
+                </div>
+            </div>
+        
+            <!-- Second carousel item: Custom Hiking Experiences -->
+            <div class="carousel-item" aria-label="Custom Hiking Experiences">
+                <img src="{% static 'images/carousel/img (2).png' %}" class="d-block w-100 rounded-5" alt="Sunrise over a lake with trees reflecting.">
+                <div class="carousel-caption">
+                    <h4 class="d-block">Custom Hiking Experiences</h4>
+                    <p class="d-none d-md-block">Looking for a unique hiking adventure? We offer personalized hiking trips tailored to your preferences, fitness level, and schedule. Tell us what you’re looking for, and we’ll craft an experience just for you!</p>
+                </div>
+            </div>
+        
+            <!-- Third carousel item: Multi-Day Trekking Tours -->
+            <div class="carousel-item" aria-label="Multi-Day Trekking Tours">
+                <img src="{% static 'images/carousel/img (3).png' %}" class="d-block w-100 rounded-5" alt="Snowy mountain peak against blue sky.">
+                <div class="carousel-caption">
+                    <h4 class="d-block">Multi-Day Trekking Tours</h4>
+                    <p class="d-none d-md-block">For those who crave a longer adventure, we offer multi-day trekking experiences that allow you to fully immerse yourself in nature. Enjoy scenic campsites, authentic local experiences, and a true connection with Greece’s landscapes.</p>
+                </div>
+            </div>
+        
+            <!-- Fourth carousel item: Hiking and Outdoor Skills Workshops -->
+            <div class="carousel-item" aria-label="Hiking and Outdoor Skills Workshops">
+                <img src="{% static 'images/carousel/img (4).png' %}" class="d-block w-100 rounded-5" alt="Mountain peak under a starry night sky.">
+                <div class="carousel-caption">
+                    <h4 class="d-block">Hiking and Outdoor Skills Workshops</h4>
+                    <p class="d-none d-md-block">New to hiking? Want to improve your outdoor skills? Our workshops teach essential hiking techniques, navigation, survival skills, and safety measures to ensure you’re fully prepared for your next adventure.</p>
+                </div>
+            </div>
+        
+            <!-- Fifth carousel item: Equipment Rentals and Recommendations -->
+            <div class="carousel-item" aria-label="Equipment Rentals and Recommendations">
+                <img src="{% static 'images/carousel/img (5).png' %}" class="d-block w-100 rounded-5" alt="Massive waterfall cascading down rocky cliff face.">
+                <div class="carousel-caption">
+                    <h4 class="d-block">Equipment Rentals and Recommendations</h4>
+                    <p class="d-none d-md-block">Don’t have the right gear? No problem! We provide high-quality hiking equipment rentals, including backpacks, trekking poles, and camping gear. We also offer recommendations on what to bring for each trip.</p>
+                </div>
+            </div>
+        
+        </div>
+        
+
+        <!-- Carousel controls for navigating between items -->
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev" aria-label="Previous slide">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="next" aria-label="Next slide">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
+    </div>
+
+
+{% endblock %}
