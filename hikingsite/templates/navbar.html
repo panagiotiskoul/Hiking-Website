@@ -27,7 +27,7 @@
                     </li>
             
                     <li class="nav-item flex-fill">
-                        <a class="nav-link {% if request.resolver_match.url_name == 'trips' %}active{% endif %}" href="{% url 'trips' %}" role="menuitem">Trips</a>
+                        <a class="nav-link {% if request.resolver_match.url_name == 'trips' %}active{% endif %}" href="{% url 'trips:list' %}" role="menuitem">Trips</a>
                     </li>
             
                     <li class="nav-item flex-fill">

@@ -43,9 +43,9 @@ class Trip(models.Model):
     location = models.CharField(max_length=60)
     difficulty = models.CharField(max_length=10, choices=DIFFICULTY_LEVELS)
     price = models.DecimalField(
-    max_digits=8,
-    decimal_places=2,
-    validators=[MinValueValidator(0)]
+        max_digits=8,
+        decimal_places=2,
+        validators=[MinValueValidator(0)]
     )
     start_date = models.DateField(validators=[validate_future_date])
     end_date = models.DateField(validators=[validate_future_date])
@@ -61,8 +61,9 @@ class Trip(models.Model):
         on_delete=models.SET_NULL,
         null=True,
         blank=True,
-        related_name='trips'
+        related_name='trip_guides'
     )
+    slug = models.SlugField(unique=True, null=True)
 
     @property
     def duration(self):
@@ -75,8 +76,8 @@ class Trip(models.Model):
 
 # Booking Model
 class Booking(models.Model):
-    trip = models.ForeignKey(Trip, on_delete=models.CASCADE, related_name='bookings')
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='bookings')
+    trip = models.ForeignKey(Trip, on_delete=models.CASCADE, related_name='booked_trips')
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user_bookings')
     booking_date = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
@@ -86,8 +87,8 @@ class Booking(models.Model):
 
 # Review Model
 class Review(models.Model):
-    trip = models.ForeignKey(Trip, on_delete=models.CASCADE, related_name='reviews')
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='reviews')
+    trip = models.ForeignKey(Trip, on_delete=models.CASCADE, related_name='trip_reviews')
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user_reviews')
     rating = models.PositiveSmallIntegerField(
     validators=[MinValueValidator(1), MaxValueValidator(5)]
     )
@@ -101,7 +102,7 @@ class Review(models.Model):
 
 # Payment Model
 class Payment(models.Model):
-    booking = models.OneToOneField(Booking, on_delete=models.CASCADE, related_name='payment')
+    booking = models.OneToOneField(Booking, on_delete=models.CASCADE, related_name='booking_payment')
     amount = models.DecimalField(max_digits=8, decimal_places=2)
     payment_date = models.DateTimeField(auto_now_add=True)
 

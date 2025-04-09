@@ -329,42 +329,6 @@ footer .text-reset {
     border-color: #009a3e !important; /* Optional: Adjust focus border color */
     box-shadow: 0 0 0 0.25rem rgba(0, 127, 78, 0.25) !important; /* Optional focus shadow */
 }
-
-
-
-/* Tasks Forms */
-
-.taskfields label {
-    color: rgb(33, 37, 41)
-}
-
-.taskfields input,
-.taskfields textarea,
-.taskfields select {
-    background-color: white; /* Adjust background color to light gray */
-    color: rgb(33, 37, 41); /* Change text color to white */
-}
-
-.taskfields select option {
-    color: rgb(33, 37, 41); /* Change the text color of the options inside the dropdown */
-}
-
-.taskfields select:focus,
-.taskfields input:focus,
-.taskfields textarea:focus {
-    border-color: #009a3e !important; /* Optional: Adjust focus border color */
-    box-shadow: 0 0 0 0.25rem rgba(0, 127, 78, 0.25) !important; /* Optional focus shadow */
-}
-
-
-
-/* HomePage Taks Preview */
-
-.previewtable {
-    border-radius: 1rem; /* Adjust the value as needed */
-    overflow: hidden; /* Ensure the rounded corners work */
-}
-
    
 
 

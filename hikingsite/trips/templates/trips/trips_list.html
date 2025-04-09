@@ -1,0 +1,27 @@
+{% extends "layout.html" %}
+{% load static %}
+
+{% block title %}
+    Trips | North Hiking
+{% endblock %}
+
+{% block content %}
+    <section>
+        <h1>Trips List</h1>
+        {% for trip in trips %}
+            <article class="trip">
+                <h2>
+                    <a href="{% url 'trips:page' slug=trip.slug %}">
+                    {{ trip.location }}
+                    </a>
+                </h2>
+                <p>Date: {{ trip.start_date }}</p>
+                <p>Duration: {{ trip.duration }} days</p>
+                <p>Difficulty: {{ trip.difficulty }}</p>
+                <p>Price: {{ trip.price }}$</p>
+                
+            </article>
+
+        {% endfor %}
+    </section>
+{% endblock %}

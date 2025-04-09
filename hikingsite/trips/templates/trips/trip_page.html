@@ -1,0 +1,21 @@
+{% extends "layout.html" %}
+{% load static %}
+
+{% block title %}
+    {{ trip.location }}
+{% endblock %}
+
+{% block content %}
+    <section>
+        <h1>{{ trip.location }}</h1>
+        <!-- Trip image banner -->
+        <p>Trip Description: {{ trip.description }}</p>
+        <p>Dates: {{ trip.start_date }} to {{ trip.end_date }}</p>
+        <p>Duration: {{ trip.duration }} days</p>
+        <p>Difficulty: {{ trip.difficulty }}</p>
+        <p>Price: {{ trip.price }}$</p>
+        <p>Guide: {{ trip.guide }}</p>
+        <!-- Book Trip Button -->
+
+    </section>
+{% endblock %}
