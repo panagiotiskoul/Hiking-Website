@@ -9,23 +9,28 @@ $(document).ready(function(){
         $("#welcome").addClass("welcome-box-dark").removeClass("welcome-box");
         $("#footer").addClass("footer-dark");
         $("#darkModeToggle").text("Light");
-        $("hr").addClass("seperator"); // Add .separator to all <hr> elements
+        $("hr").addClass("seperator-light").removeClass("seperator-dark");
         $(".contact-form label").css("color", "white");
         $(".contact-form textarea, .contact-form input, .contact-form select").css({
             "background-color": "#333840", // Dark gray background
             "color": "white" // White text color
         });
         $(".contact-form select option").css("color", "white"); // White text in select options
+        $(".contact-form .text-muted").css("color", "white"); // White text in select options
         $(".taskfields label").css("color", "white");
         $(".taskfields input, .taskfields select").css({
             "background-color": "#333840", // Dark gray background
             "color": "white" // White text color
         });
         $(".taskfields select option").css("color", "white"); // White text in select options
+        $(".no-decoration").css("color", "white");
     }
+
+    
 
     // Handle button click for dark mode toggle
     $("#darkModeToggle").click(function(){
+
         // Toggle classes for dark mode
         $("#navbar").toggleClass("navbar-light navbar-dark bg-light bg-dark");
 
@@ -42,7 +47,7 @@ $(document).ready(function(){
         $("#footer").toggleClass("footer-dark");
 
         // Toggle .separator class on all <hr> elements
-        $("hr").toggleClass("separator");
+        $("hr").toggleClass("seperator-light");
 
         // CToggle Dark Mode for the Contact Form Labels
         // Check the color of the first label
@@ -95,6 +100,23 @@ $(document).ready(function(){
             });
             $(".taskfields select option").css("color", "rgb(33, 37, 41)"); // Dark text in select options
         }
+
+        // Toggle help text (like password requirements) in contact forms and crispy forms (used in register)
+        var helpTextColor = $(".contact-form .form-text, .contact-form .text-muted").first().css("color");
+        if (helpTextColor === "rgb(33, 37, 41)" || helpTextColor === "rgb(108, 117, 125)") {
+            $(".contact-form .form-text, .contact-form .text-muted").css("color", "white");
+        } else {
+            $(".contact-form .form-text, .contact-form .text-muted").css("color", "rgb(108, 117, 125)");
+        }
+
+        // Toggle Dark Mode for the Trip Titles
+        var currentColor = $(".no-decoration").first().css("color");
+        if (currentColor === "rgb(33, 37, 41)") {
+            $(".no-decoration").css("color", "white");
+        } else if (currentColor === "rgb(255, 255, 255)") {
+            $(".no-decoration").css("color", "rgb(33, 37, 41)");
+        }
+
 
         // Change the button text between "Dark" and "Light"
         var buttonText = $("#darkModeToggle").text().trim();

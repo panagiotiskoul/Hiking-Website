@@ -7,14 +7,22 @@
 
 {% block content %}
     <section>
+        <img 
+            class="banner"
+            src="{{ trip.image.url }}"
+            alt="{{ trip.location }}"
+        />
         <h1>{{ trip.location }}</h1>
-        <!-- Trip image banner -->
         <p>Trip Description: {{ trip.description }}</p>
         <p>Dates: {{ trip.start_date }} to {{ trip.end_date }}</p>
         <p>Duration: {{ trip.duration }} days</p>
         <p>Difficulty: {{ trip.difficulty }}</p>
         <p>Price: {{ trip.price }}$</p>
         <p>Guide: {{ trip.guide }}</p>
+        <p>
+            <a href="{% url 'trips:list' %}">
+            Go back to all trips list
+        </p>
         <!-- Book Trip Button -->
 
     </section>

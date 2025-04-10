@@ -37,6 +37,10 @@
                     <li class="nav-item flex-fill">
                         <a class="nav-link {% if request.resolver_match.url_name == 'contact' %}active{% endif %}" href="{% url 'contact' %}" role="menuitem">Contact</a>
                     </li>
+
+                    <li class="nav-item flex-fill">
+                        <a class="nav-link {% if request.resolver_match.url_name == 'register' %}active{% endif %}" href="{% url 'users:register' %}" role="menuitem">Register</a>
+                    </li>
                 </ul>
 
                 <!-- Dark Mode Toggle -->

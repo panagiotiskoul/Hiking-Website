@@ -6,22 +6,62 @@
 {% endblock %}
 
 {% block content %}
-    <section>
-        <h1>Trips List</h1>
+<section class="trips_section">
+    <div class="container">
+        <div class="normal_title">
+            <h2>Trips List</h2>
+        </div>
+        <div class="row justify-content-center">
+            <p class="justify">
+                Below, you will find a list of our upcoming trips, each carefully organized by our experienced members to ensure a memorable and smooth experience. The trips have been planned with attention to detail, making sure all activities are well-coordinated for the best possible adventure. Additionally, we’ve included some indicative images from past years, showcasing similar trips we’ve done before, so you can get a glimpse of what to expect. We hope this gives you a sense of the excitement and adventure that awaits!
+            </p>
+        </div>
+
+        <hr>
+
         {% for trip in trips %}
-            <article class="trip">
-                <h2>
+        <h2 class="normal_title">
+            <a class="no-decoration" href="{% url 'trips:page' slug=trip.slug %}">
+                {{ trip.location }}
+            </a>
+        </h2>
+
+        <article class="row justify-content-center">
+
+            <div class="col-xxl-5 col-xl-5 col-md-5 col-sm-12 col-xs-12 my-3 mx-auto" aria-label="">
+                <div class="mb-3">
                     <a href="{% url 'trips:page' slug=trip.slug %}">
-                    {{ trip.location }}
+                        <img src="{{ trip.image.url }}" class="img-fluid rounded-5" alt="{{ trip.location }}"/>
                     </a>
-                </h2>
-                <p>Date: {{ trip.start_date }}</p>
-                <p>Duration: {{ trip.duration }} days</p>
-                <p>Difficulty: {{ trip.difficulty }}</p>
-                <p>Price: {{ trip.price }}$</p>
-                
-            </article>
+                </div>
+            </div>
+
+
+            <div class="col-xxl-5 col-xl-5 col-md-5 col-sm-12 col-xs-12 my-3 mx-auto" aria-label="Information about the Hymettus hiking trip">
+                <div>
+                    <p class="justify">
+                        <p class="trip-detail">Date: {{ trip.start_date }}</p>
+                        <p class="trip-detail">Duration: {{ trip.duration }} days</p>
+                        <p class="trip-detail 
+                            {% if trip.difficulty == 'Easy' %}text-success
+                            {% elif trip.difficulty == 'Moderate' %}text-warning
+                            {% elif trip.difficulty == 'Hard' %}text-danger
+                            {% endif %}">
+                            Difficulty: {{ trip.difficulty }}
+                        </p>
+
+                        <p class="trip-detail">Price: {{ trip.price }}$</p>
+                        <a href="{% url 'trips:page' slug=trip.slug %}" class="greenbutton btn">More Info</a>
+                    </p>
+                </div>
+            </div>
+        
+            <hr class="seperator-dark">
+                  
+        </article>
+
 
         {% endfor %}
-    </section>
+    </div>
+</section>
 {% endblock %}

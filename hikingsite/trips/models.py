@@ -51,10 +51,9 @@ class Trip(models.Model):
     end_date = models.DateField(validators=[validate_future_date])
     description = models.TextField()
     image = models.ImageField(
-        upload_to='trip_images/',
+        default='default.png',
         blank=True,
         null=True,
-        default='trip_images/default.jpg'
     )
     guide = models.ForeignKey(
         Guide,

@@ -279,27 +279,6 @@ footer .text-reset {
 
 
 
-/* Trips Page */
-
-.trips {
-    margin-left: 15%;
-    margin-right: 15%;
-}
-
-.trips-title {
-    margin-left:15%;
-    margin-top: 5%;
-}
-
-
-
-/* Horizontal Lines */
-
-.seperator {
-    border: 1px solid #ababab; /* Change the color to your preferred color */
-}
-
-
 
 /* Contact Form */
 
@@ -329,8 +308,57 @@ footer .text-reset {
     border-color: #009a3e !important; /* Optional: Adjust focus border color */
     box-shadow: 0 0 0 0.25rem rgba(0, 127, 78, 0.25) !important; /* Optional focus shadow */
 }
-   
 
+/* This fixes the password requirements text in the rigistration form */
+.contact-form .text-muted,
+.contact-form .form-text {
+    color: #01643e !important;
+}
+
+
+/* Horizontal Lines */
+
+.seperator-dark{
+    border: 1px solid #444444; 
+}
+
+.seperator-light{
+    border: 1px solid #c2c2c2;
+}
+
+
+
+/* Trips Page */
+.no-decoration {
+    text-decoration: none;
+    color: rgb(33, 37, 41);
+    display: block;
+    text-align: center;
+}
+
+
+.trips-title {
+    margin-left:15%;
+    margin-top: 5%;
+}
+
+
+.trips_section {
+    margin-left: 15%;
+    margin-right: 15%;
+}
+
+.trip-detail {
+    font-weight: 500;
+    font-size: 20px;
+}
+
+
+.banner {
+    display: block;
+    width: 100%;
+    max-width: 200px;
+}
 
 
 
