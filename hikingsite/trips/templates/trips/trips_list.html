@@ -20,11 +20,13 @@
         <hr>
 
         {% for trip in trips %}
+        <!--
         <h2 class="normal_title">
             <a class="no-decoration" href="{% url 'trips:page' slug=trip.slug %}">
                 {{ trip.location }}
             </a>
         </h2>
+        -->
 
         <article class="row justify-content-center">
 
@@ -38,6 +40,12 @@
 
 
             <div class="col-xxl-5 col-xl-5 col-md-5 col-sm-12 col-xs-12 my-3 mx-auto" aria-label="Information about the Hymettus hiking trip">
+
+                <h2 class="mb-5">
+                    <a class="no-decoration" href="{% url 'trips:page' slug=trip.slug %}">
+                        {{ trip.title }} - {{ trip.location }}
+                    </a>
+                </h2>
                 <div>
                     <p class="justify">
                         <p class="trip-detail">Date: {{ trip.start_date }}</p>

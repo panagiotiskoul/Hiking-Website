@@ -2,7 +2,7 @@ from django.urls import path
 from . import views
 
 #You have to change all the redirects to be like main:contact
-#app_name = "main" 
+app_name = "main" 
 
 urlpatterns = [
     path('', views.home, name='home'),

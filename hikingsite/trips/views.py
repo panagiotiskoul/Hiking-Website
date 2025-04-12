@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from . models import Trip
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 
@@ -11,3 +12,7 @@ def trips_list(request):
 def trip_page(request, slug):
     trip =Trip.objects.get(slug=slug)
     return render(request, 'trips/trip_page.html', {'trip':trip})
+
+@login_required(login_url="/users/login/")
+def trip_new(request):
+    return render(request, 'trips/trip_new.html')

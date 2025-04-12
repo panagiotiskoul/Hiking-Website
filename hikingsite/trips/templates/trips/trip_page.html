@@ -2,28 +2,47 @@
 {% load static %}
 
 {% block title %}
-    {{ trip.location }}
+    {{ trip.title }} - {{ trip.location }}
 {% endblock %}
 
 {% block content %}
     <section>
+        <!-- Trip Banner -->
         <img 
             class="banner"
             src="{{ trip.image.url }}"
-            alt="{{ trip.location }}"
+            alt="{{ trip.title }} banner"
         />
-        <h1>{{ trip.location }}</h1>
-        <p>Trip Description: {{ trip.description }}</p>
-        <p>Dates: {{ trip.start_date }} to {{ trip.end_date }}</p>
-        <p>Duration: {{ trip.duration }} days</p>
-        <p>Difficulty: {{ trip.difficulty }}</p>
-        <p>Price: {{ trip.price }}$</p>
-        <p>Guide: {{ trip.guide }}</p>
-        <p>
-            <a href="{% url 'trips:list' %}">
-            Go back to all trips list
-        </p>
-        <!-- Book Trip Button -->
 
+        <!-- Title and Location -->
+        <h1>{{ trip.title }} - {{ trip.location }}</h1>
+
+        <!-- Dates and Duration -->
+        <p><strong>Dates:</strong> {{ trip.start_date }} to {{ trip.end_date }}</p>
+        <p><strong>Total Duration:</strong> {{ trip.duration }} days</p>
+        <p><strong>Hiking Time:</strong> {{ trip.hiking_duration }} hours</p>
+
+        <!-- Difficulty & Terrain -->
+        <p><strong>Difficulty:</strong> {{ trip.difficulty }}</p>
+        <p><strong>Terrain:</strong> {{ trip.terrain }}</p>
+
+        <!-- Distance & Altitude -->
+        <p><strong>Distance:</strong> {{ trip.distance }} km</p>
+        <p><strong>Altitude Change:</strong> {{ trip.altitude_difference }} m</p>
+
+        <!-- Max Participants & Price -->
+        <p><strong>Max Participants:</strong> {{ trip.max_participants }}</p>
+        <p><strong>Price:</strong> ${{ trip.price }}</p>
+
+        <!-- Guide -->
+        <p><strong>Guide:</strong> {{ trip.guide }}</p>
+
+        <!-- Description -->
+        <p><strong>Description:</strong> {{ trip.description }}</p>
+
+        <!-- Navigation -->
+        <p>
+            <a href="{% url 'trips:list' %}">← Go back to all trips</a>
+        </p>
     </section>
 {% endblock %}

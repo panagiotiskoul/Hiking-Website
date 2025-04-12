@@ -3,6 +3,8 @@ from django.utils import timezone
 from django.core.exceptions import ValidationError
 from django.contrib.auth.models import User
 from django.core.validators import MinValueValidator, MaxValueValidator
+from django.utils.text import slugify
+
 
 
 
@@ -12,6 +14,73 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 def validate_future_date(value):
     if value < timezone.now().date():
         raise ValidationError("Date cannot be in the past.")
+
+
+
+# Trip Model
+class Trip(models.Model):
+    DIFFICULTY_LEVELS = [
+        ('Easy', 'Easy'),
+        ('Moderate', 'Moderate'),
+        ('Hard', 'Hard'),
+        ('Extreme', 'Extreme')
+    ]
+
+    TERRAIN_TYPES = [
+        ('Forest', 'Forest'),
+        ('Mountain', 'Mountain'),
+        ('Beach', 'Beach'),
+        ('Urban', 'Urban'),
+    ]
+
+    title = models.CharField(max_length=60)
+    location = models.CharField(max_length=40)
+    difficulty = models.CharField(max_length=10, choices=DIFFICULTY_LEVELS)
+    distance = models.DecimalField(max_digits=5, decimal_places=1, validators=[MinValueValidator(0)])
+    terrain = models.CharField(max_length=20, choices=TERRAIN_TYPES)
+    price = models.DecimalField(max_digits=8, decimal_places=2, validators=[MinValueValidator(0)])
+    start_date = models.DateField(validators=[validate_future_date])
+    end_date = models.DateField(validators=[validate_future_date])
+    altitude_difference = models.PositiveIntegerField(validators=[MinValueValidator(1)])
+    hiking_duration = models.PositiveIntegerField(validators=[MinValueValidator(1)])
+    max_participants = models.PositiveIntegerField(validators=[MinValueValidator(1), MaxValueValidator(99)])
+    description = models.TextField(max_length=500)
+    image = models.ImageField(default='default.png', blank=True, null=True)
+
+    guide = models.ForeignKey(
+        'Guide',
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='trip_guides'
+    )
+
+    slug = models.SlugField(unique=True, null=True, blank=True, editable=False)
+
+    def save(self, *args, **kwargs):
+        if not self.slug and self.title:
+            self.slug = slugify(self.title)
+        super().save(*args, **kwargs)
+
+    @property
+    def duration(self):
+        return (self.end_date - self.start_date).days
+
+    def __str__(self):
+        return f"{self.title} - {self.location} ({self.start_date} to {self.end_date})"
+
+
+
+# Booking Model
+class Booking(models.Model):
+    trip = models.ForeignKey(Trip, on_delete=models.CASCADE, related_name='booked_trips')
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user_bookings')
+    booking_date = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Booking by {self.user.username} for {self.trip.location}"
+    
+
 
 # Guide Model
 class Guide(models.Model):
@@ -32,67 +101,16 @@ class Guide(models.Model):
 
 
 
-# Trip Model
-class Trip(models.Model):
-    DIFFICULTY_LEVELS = [
-        ('Easy', 'Easy'),
-        ('Moderate', 'Moderate'),
-        ('Hard', 'Hard'),
-    ]
-
-    location = models.CharField(max_length=60)
-    difficulty = models.CharField(max_length=10, choices=DIFFICULTY_LEVELS)
-    price = models.DecimalField(
-        max_digits=8,
-        decimal_places=2,
-        validators=[MinValueValidator(0)]
-    )
-    start_date = models.DateField(validators=[validate_future_date])
-    end_date = models.DateField(validators=[validate_future_date])
-    description = models.TextField()
-    image = models.ImageField(
-        default='default.png',
-        blank=True,
-        null=True,
-    )
-    guide = models.ForeignKey(
-        Guide,
-        on_delete=models.SET_NULL,
-        null=True,
-        blank=True,
-        related_name='trip_guides'
-    )
-    slug = models.SlugField(unique=True, null=True)
-
-    @property
-    def duration(self):
-        return (self.end_date - self.start_date).days
-
-    def __str__(self):
-        return f"{self.location} ({self.start_date} to {self.end_date})"
-
-
-
-# Booking Model
-class Booking(models.Model):
-    trip = models.ForeignKey(Trip, on_delete=models.CASCADE, related_name='booked_trips')
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user_bookings')
-    booking_date = models.DateTimeField(auto_now_add=True)
-
-    def __str__(self):
-        return f"Booking by {self.user.username} for {self.trip.location}"
-
-
-
 # Review Model
 class Review(models.Model):
     trip = models.ForeignKey(Trip, on_delete=models.CASCADE, related_name='trip_reviews')
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user_reviews')
-    rating = models.PositiveSmallIntegerField(
-    validators=[MinValueValidator(1), MaxValueValidator(5)]
-    )
+    rating = models.PositiveSmallIntegerField(validators=[MinValueValidator(1), MaxValueValidator(5)])
     comment = models.TextField(blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ('user', 'trip')
 
     def __str__(self):
         return f"Review by {self.user.username} on {self.trip.location}"
@@ -107,3 +125,56 @@ class Payment(models.Model):
 
     def __str__(self):
         return f"Payment for {self.booking.user.username}"
+    
+
+
+# Views History Model
+class ViewedTrip(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='viewed_trips')
+    trip = models.ForeignKey('Trip', on_delete=models.CASCADE, related_name='viewed_by')
+    viewed_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ('user', 'trip')
+
+    def __str__(self):
+        return f"{self.user.username} viewed {self.trip.title}"
+    
+
+
+# Wishlist Model
+class Wishlist(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='wishlist')
+    trip = models.ForeignKey('Trip', on_delete=models.CASCADE, related_name='wishlisted_by')
+    added_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.user.username} added {self.trip.title} to wishlist"
+    
+
+
+# Contact Form Model
+class ContactMessage(models.Model):
+    REASON_CHOICES = [
+        ("Upcoming trip", "Upcoming trip"),
+        ("Past trip", "Past trip"),
+        ("Trip suggestion", "Trip suggestion"),
+        ("Shop", "Shop"),
+        ("Payment issue", "Payment issue"),
+        ("Account issue", "Account issue"),
+        ("Other", "Other"),
+    ]
+
+    full_name = models.CharField(max_length=60)
+    email = models.EmailField()
+    subject = models.CharField(max_length=40)
+    message = models.TextField(max_length=500)
+    reason = models.CharField(max_length=50, choices=REASON_CHOICES)
+    created_at = models.DateTimeField(auto_now_add=True)
+    is_resolved = models.BooleanField(default=False)
+
+    def __str__(self):
+        return f"Message from {self.full_name} ({self.email})"
+
+
+

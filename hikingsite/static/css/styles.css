@@ -74,7 +74,7 @@ p {
 
 /* Center the dark mode button when the navbar collapses */
 @media (max-width: 767px) {
-    .dark-mode-container {
+    .nav-btn-container {
         width: 100%;
         display: flex;
         justify-content: center;
@@ -82,7 +82,7 @@ p {
         margin-bottom: 20px;
     }
 
-    #darkModeToggle {
+    #darkModeToggle, .reg-btn {
         display: block;
         width: fit-content;
     }
@@ -90,7 +90,7 @@ p {
 
 /* Add margin to the right of the Dark Mode button on medium and large screens */
 @media (min-width: 768px) {
-    #darkModeToggle {
+    #darkModeToggle, .reg-btn {
         margin-right: 20px;  /* Adjust the margin as needed */
     }
 }
@@ -329,11 +329,17 @@ footer .text-reset {
 
 
 /* Trips Page */
-.no-decoration {
+.no-decoration_old {
     text-decoration: none;
     color: rgb(33, 37, 41);
     display: block;
     text-align: center;
+}
+
+.no-decoration {
+    text-decoration: none;
+    color: rgb(33, 37, 41);
+    font-size: 2rem;
 }
 
 
@@ -362,11 +368,8 @@ footer .text-reset {
 
 
 
-
-
-
-
-
-
-
-
+/* Login Page */
+.reg {
+    margin-top: 50px;
+    text-align: center;
+}

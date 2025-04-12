@@ -1,0 +1,29 @@
+{% extends "layout.html" %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+{% block title %}
+    Login
+{% endblock %}
+
+{% block content %}
+    <section>
+        <h2 class="text-center normal_title">User Login</h2>
+        <form class="contact-form" action="/users/login/" method="post">
+            {% csrf_token %}
+            {{ form | crispy }}
+            {% if request.GET.next %}
+                <input type="hidden" name="next" value="{{ request.GET.next }}" />
+            {% endif %}
+            <button class="form-submit greenbutton btn">Login</button>
+        </form>
+        <!-- Register Button -->
+
+        <div class="contact-form reg">
+            <p>
+                Don't have an account?
+            </p>
+            <a href="{% url 'users:register' %}" class="btn btn-outline-success" aria-label="Register">Register</a>
+        </div>
+    </section>
+{% endblock %}

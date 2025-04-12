@@ -1,10 +1,14 @@
 from django.contrib import admin
-from .models import Guide, Trip, Booking, Review, Payment
+from .models import Trip, Guide, Booking, Review, Payment, Wishlist, ViewedTrip, ContactMessage
+
 
 # Register your models here.
 
-admin.site.register(Guide)
 admin.site.register(Trip)
+admin.site.register(Guide)
 admin.site.register(Booking)
 admin.site.register(Review)
 admin.site.register(Payment)
+admin.site.register(Wishlist)
+admin.site.register(ViewedTrip)
+admin.site.register(ContactMessage)
