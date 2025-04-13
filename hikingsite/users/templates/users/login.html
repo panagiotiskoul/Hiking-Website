@@ -9,7 +9,7 @@
 {% block content %}
     <section>
         <h2 class="text-center normal_title">User Login</h2>
-        <form class="contact-form" action="/users/login/" method="post">
+        <form class="margin30 contact-form" action="/users/login/" method="post">
             {% csrf_token %}
             {{ form | crispy }}
             {% if request.GET.next %}

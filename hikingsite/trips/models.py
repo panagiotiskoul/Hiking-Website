@@ -47,12 +47,7 @@ class Trip(models.Model):
     description = models.TextField(max_length=500)
     image = models.ImageField(default='default.png', blank=True, null=True)
 
-    guide = models.ForeignKey(
-        'Guide',
-        on_delete=models.SET_NULL,
-        null=True,
-        blank=True,
-        related_name='trip_guides'
+    guide = models.ForeignKey('Guide', on_delete=models.SET_NULL, null=True, blank=True, related_name='trip_guides'
     )
 
     slug = models.SlugField(unique=True, null=True, blank=True, editable=False)

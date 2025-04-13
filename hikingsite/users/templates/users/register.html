@@ -9,7 +9,7 @@
 {% block content %}
     <section>
         <h2 class="text-center normal_title">Register New User</h2>
-        <form class="contact-form" action="/users/register/" method="post">
+        <form class="margin30 contact-form" action="/users/register/" method="post">
             {% csrf_token %}
             {{ form | crispy }}
             <button class="form-submit greenbutton btn">Register</button>

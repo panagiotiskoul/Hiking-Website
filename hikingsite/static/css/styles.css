@@ -282,7 +282,7 @@ footer .text-reset {
 
 /* Contact Form */
 
-.contact-form {
+.margin15 {
     margin-left: 15%;
     margin-right: 15%;
 }
@@ -356,15 +356,19 @@ footer .text-reset {
 
 .trip-detail {
     font-weight: 500;
-    font-size: 20px;
+    font-size: 18px;
 }
 
 
 .banner {
     display: block;
     width: 100%;
-    max-width: 200px;
+    max-width: 300px;
 }
+
+
+/* Filters Trip Page */
+
 
 
 
@@ -373,3 +377,15 @@ footer .text-reset {
     margin-top: 50px;
     text-align: center;
 }
+
+.margin30 {
+    margin-left: 30%;
+    margin-right: 30%;
+}
+
+@media (max-width: 768px) {
+    .margin30 {
+      margin-left: 10%;
+      margin-right: 10%;
+    }
+  }

@@ -38,7 +38,7 @@
                         <a class="nav-link {% if request.resolver_match.url_name == 'contact' %}active{% endif %}" href="{% url 'main:contact' %}" role="menuitem">Contact</a>
                     </li>
 
-                    {% if user.is_authenticated %}
+                    {% if request.user.is_authenticated and request.user.groups.all.0.name == "Guides" %}
                         <li class="nav-item flex-fill">
                             <a class="nav-link {% if request.resolver_match.url_name == 'new-trip' %}active{% endif %}" href="{% url 'trips:new-trip' %}" role="menuitem">New Trip</a>
                         </li>

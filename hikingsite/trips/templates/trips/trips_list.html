@@ -19,6 +19,89 @@
 
         <hr>
 
+        <form method="get" class="contact-form row justify-content-center mb-4">
+            <div class="col-md-4 col-lg-3 mx-2 my-3">
+                <select name="sort_date" class="form-select" onchange="this.form.submit()">
+                    <option value="">Sort by Date</option>
+                    <option value="asc" {% if sort_start_date == "asc" %}selected{% endif %}>Ascending ↑</option>
+                    <option value="desc" {% if sort_start_date == "desc" %}selected{% endif %}>Descending ↓</option>
+                </select>
+            </div>
+
+            <div class="col-md-4 col-lg-3 mx-2 my-3">
+                <select name="sort_hiking_time" class="form-select" onchange="this.form.submit()">
+                    <option value="">Sort by Duration</option>
+                    <option value="asc" {% if current_hiking_sort == "asc" %}selected{% endif %}>Shortest → Longest</option>
+                    <option value="desc" {% if current_hiking_sort == "desc" %}selected{% endif %}>Longest → Shortest</option>
+                </select>
+            </div>
+
+            <div class="col-md-4 col-lg-2 mx-2 my-3">
+                <select name="difficulty" class="form-select" onchange="this.form.submit()">
+                    <option value="">All Levels</option>
+                    <option value="Easy" {% if difficulty_filter == "Easy" %}selected{% endif %}>Easy</option>
+                    <option value="Moderate" {% if difficulty_filter == "Moderate" %}selected{% endif %}>Moderate</option>
+                    <option value="Hard" {% if difficulty_filter == "Hard" %}selected{% endif %}>Hard</option>
+                    <option value="Extreme" {% if difficulty_filter == "Extreme" %}selected{% endif %}>Extreme</option>
+                </select>
+            </div>
+
+            <div class="col-md-4 col-lg-2 mx-2 my-3">
+                <select name="terrain" class="form-select" onchange="this.form.submit()">
+                    <option value="">All Terrains</option>
+                    <option value="Forest" {% if terrain_filter == "Forest" %}selected{% endif %}>Forest</option>
+                    <option value="Mountain" {% if terrain_filter == "Mountain" %}selected{% endif %}>Mountain</option>
+                    <option value="Beach" {% if terrain_filter == "Beach" %}selected{% endif %}>Beach</option>
+                    <option value="Urban" {% if terrain_filter == "Urban" %}selected{% endif %}>Urban</option>
+                </select>
+            </div>
+
+            <div class="col-md-4 col-lg-4 mx-2 my-3">
+                <div class="d-flex justify-content-between mb-1">
+                    <span>{{ min_price }}$</span>
+                    <span id="priceValue">{{ current_price }}$</span>
+                    <span>{{ max_price }}$</span>
+                </div>
+                <input
+                    type="range"
+                    class="form-range"
+                    min="{{ min_price }}"
+                    max="{{ max_price }}"
+                    value="{{ current_price }}"
+                    id="priceRange"
+                    name="price"
+                    step="1"
+                    oninput="document.getElementById('priceValue').innerText = this.value + '$'"
+                    onchange="this.form.submit()"
+                >
+            </div>
+
+            <div class="col-md-4 col-lg-4 mx-2 my-3">
+                <div class="d-flex justify-content-between mb-1">
+                    <span>{{ min_distance }} km</span>
+                    <span id="distanceValue">{{ current_distance }} km</span>
+                    <span>{{ max_distance }} km</span>
+                </div>
+                <input
+                    type="range"
+                    class="form-range"
+                    min="{{ min_distance }}"
+                    max="{{ max_distance }}"
+                    value="{{ current_distance }}"
+                    id="distanceRange"
+                    name="distance"
+                    step="1"
+                    oninput="document.getElementById('distanceValue').innerText = this.value + ' km'"
+                    onchange="this.form.submit()"
+                >
+            </div>
+
+            <div class="col-md-4 col-lg-2 mx-2 my-4 d-flex justify-content-center">
+                <a href="{% url 'trips:list' %}" class="btn btn-outline-secondary">Clear Filters</a>
+            </div>
+        </form>
+        
+
         {% for trip in trips %}
         <!--
         <h2 class="normal_title">
@@ -43,17 +126,19 @@
 
                 <h2 class="mb-5">
                     <a class="no-decoration" href="{% url 'trips:page' slug=trip.slug %}">
-                        {{ trip.title }} - {{ trip.location }}
+                        {{ trip.title }}
                     </a>
                 </h2>
                 <div>
                     <p class="justify">
                         <p class="trip-detail">Date: {{ trip.start_date }}</p>
                         <p class="trip-detail">Duration: {{ trip.duration }} days</p>
+                        <p class="trip-detail">Distance: {{ trip.distance }} km</p>
                         <p class="trip-detail 
                             {% if trip.difficulty == 'Easy' %}text-success
-                            {% elif trip.difficulty == 'Moderate' %}text-warning
-                            {% elif trip.difficulty == 'Hard' %}text-danger
+                            {% elif trip.difficulty == 'Moderate' %}text-primary
+                            {% elif trip.difficulty == 'Hard' %}text-warning
+                            {% elif trip.difficulty == 'Extreme' %}text-danger
                             {% endif %}">
                             Difficulty: {{ trip.difficulty }}
                         </p>
