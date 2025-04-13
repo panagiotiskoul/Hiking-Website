@@ -84,6 +84,7 @@ class Guide(models.Model):
         ('Professional', 'Professional'),
     ]
 
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="guide_profile", null=True, blank=True)
     first_name = models.CharField(max_length=30)
     last_name = models.CharField(max_length=30)
     phone_number = models.CharField(max_length=20)

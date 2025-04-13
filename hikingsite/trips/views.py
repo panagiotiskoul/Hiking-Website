@@ -84,8 +84,16 @@ def trip_new(request):
     if request.method == 'POST':
         form = forms.CreateTrip(request.POST, request.FILES)
         if form.is_valid():
-            # save with user
+            newtrip = form.save(commit=False)
+            # Automatically assign the logged-in guide
+            if hasattr(request.user, 'guide_profile'):
+                print("Guide profile exists:", request.user.guide_profile) #debug print
+                newtrip.guide = request.user.guide_profile
+            else:
+                print("No guide profile found for user:", request.user.username) #debug print
+            newtrip.save()
             return redirect('trips:list')
     else:
         form = forms.CreateTrip()
+
     return render(request, 'trips/trip_new.html', { 'form': form })
