@@ -1,0 +1,26 @@
+{% extends 'layout.html' %}
+{% block title %}My Reviews{% endblock %}
+
+{% block content %}
+<div class="container my-4">
+    <h2 class="mb-4">My Reviews</h2>
+    {% if reviews %}
+        <div class="list-group">
+            {% for review in reviews %}
+                <div class="list-group-item mb-3 rounded border border-secondary-subtle">
+                    <h5 class="mb-1">{{ review.trip.title }}</h5>
+                    <p class="mb-1">Rating: {{ review.rating }} / 5</p>
+                    <p class="mb-1">{{ review.comment }}</p>
+                    <small>Posted on {{ review.created_at|date:"F j, Y, H:i" }}</small>
+                    <form action="{% url 'users:delete-review' review.id %}" method="post" class="mt-2">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-sm btn-outline-danger">Delete</button>
+                    </form>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p>You haven’t written any reviews yet.</p>
+    {% endif %}
+</div>
+{% endblock %}

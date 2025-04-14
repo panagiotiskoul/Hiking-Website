@@ -1,8 +1,9 @@
-from django.shortcuts import render, redirect
-from . models import Trip
+from django.shortcuts import render, redirect, get_object_or_404
+from . models import Trip, Review
 from django.contrib.auth.decorators import login_required
 from django.db.models import Min, Max
 from . import forms
+from .forms import ReviewForm
 
 # Create your views here.
 
@@ -76,8 +77,20 @@ def trips_list(request):
 
 
 def trip_page(request, slug):
-    trip =Trip.objects.get(slug=slug)
-    return render(request, 'trips/trip_page.html', {'trip':trip})
+    trip = Trip.objects.get(slug=slug)
+    user_has_reviewed = False
+
+    if request.user.is_authenticated:
+        user_has_reviewed = Review.objects.filter(user=request.user, trip=trip).exists()
+
+    context = {
+        'trip': trip,
+        'user_has_reviewed': user_has_reviewed
+    }
+
+    return render(request, 'trips/trip_page.html', context)
+
+
 
 @login_required(login_url="/users/login/")
 def trip_new(request):
@@ -97,3 +110,27 @@ def trip_new(request):
         form = forms.CreateTrip()
 
     return render(request, 'trips/trip_new.html', { 'form': form })
+
+
+
+
+@login_required
+def add_review(request, slug):
+    trip = get_object_or_404(Trip, slug=slug)
+
+    existing_review = Review.objects.filter(user=request.user, trip=trip).first()
+    if existing_review:
+        return redirect('trips:page', slug=slug)  # Redirect if review already exists
+
+    if request.method == 'POST':
+        form = ReviewForm(request.POST)
+        if form.is_valid():
+            review = form.save(commit=False)
+            review.trip = trip
+            review.user = request.user
+            review.save()
+            return redirect('trips:page', slug=slug)
+    else:
+        form = ReviewForm()
+
+    return render(request, 'trips/add_review.html', {'form': form, 'trip': trip})

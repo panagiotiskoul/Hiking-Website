@@ -54,6 +54,30 @@
                 </div>
 
                 {% if user.is_authenticated %}
+
+                    
+
+                    <div class="dropdown me-3">
+                        <button 
+                            class="btn btn-outline-success dropdown-toggle" 
+                            type="button" 
+                            id="accountDropdown" 
+                            data-bs-toggle="dropdown" 
+                            aria-expanded="false"
+                        >
+                            Account
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="accountDropdown">
+                            <li><a class="dropdown-item" href="{% url 'users:account-info' %}">My Info</a></li>
+                            <li><a class="dropdown-item" href="{% url 'users:my-payments' %}">My Payments</a></li>
+                            <li><a class="dropdown-item" href="{% url 'users:account-wishlist' %}">My Wishlist</a></li>
+                            <li><a class="dropdown-item" href="{% url 'users:user-reviews' %}">My Reviews</a></li>
+
+
+                            <!-- Add more items here -->
+                        </ul>
+                    </div>
+                
                     <!-- Logout Button -->
                     <div class="nav-btn-container">
                         <form class="logout" action="{% url 'users:logout' %}" method="post">
@@ -61,6 +85,9 @@
                             <button type="submit" class="btn btn-outline-success reg-btn" aria-label="Logout">Logout</button>
                         </form>                    
                     </div>
+                    
+                    
+                    
                 {% else %}
                     <!-- Login Button -->
                     <div class="nav-btn-container">

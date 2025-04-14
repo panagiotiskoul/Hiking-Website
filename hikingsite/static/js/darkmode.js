@@ -4,7 +4,10 @@ $(document).ready(function(){
     // Check if dark mode is enabled from localStorage and apply it
     if(localStorage.getItem("darkMode") === "enabled") {
         $("body").addClass("dark-background");
-        $("p, h1, h2, h3, h4, h5, h6").addClass("light-text");
+        $("p, h1, h2, h3, h4, h5, h6, span, th, td").addClass("light-text");
+        $("table").addClass("table-dark");
+        $("thead").addClass("thead-dark");
+        $(".card").addClass("dark-background");
         $("#navbar").addClass("navbar-dark bg-dark").removeClass("navbar-light bg-light");
         $("#welcome").addClass("welcome-box-dark").removeClass("welcome-box");
         $("#footer").addClass("footer-dark");
@@ -37,8 +40,14 @@ $(document).ready(function(){
         // Toggle background color of the page
         $("body").toggleClass("dark-background");
 
+        $(".card").toggleClass("dark-background");
+
+
         // Toggle text color for paragraphs and headers
-        $("p, h1, h2, h3, h4, h5, h6").toggleClass("light-text");
+        $("p, h1, h2, h3, h4, h5, h6, span, th, td").toggleClass("light-text");
+
+        $("table").toggleClass("table-dark");
+        $("thead").toggleClass("thead-dark");
 
         // Toggle welcome-box classes for the #welcome div
         $("#welcome").toggleClass("welcome-box-dark welcome-box");

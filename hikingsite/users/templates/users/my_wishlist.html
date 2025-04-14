@@ -1,0 +1,32 @@
+{% extends "layout.html" %}
+{% block title %}My Wishlist{% endblock %}
+
+{% block content %}
+<section class="container mt-5">
+    <h2>My Wishlist</h2>
+    <hr>
+
+    {% if wishlist_items %}
+        <div class="row">
+            {% for item in wishlist_items %}
+                <div class="col-md-6 col-lg-3 my-3">
+                    <div class="card h-100">
+                        <img src="{{ item.trip.image.url }}" class="card-img-top" alt="{{ item.trip.title }}">
+                        <div class="card-body">
+                            <h4 class="card-title">{{ item.trip.title }}</h4>
+                            <p class="card-text">{{ item.trip.start_date }}</p>
+                            <a href="{% url 'trips:page' slug=item.trip.slug %}" class="greenbutton btn btn-sm me-2">View Trip</a>
+                            <form action="{% url 'users:remove-from-wishlist' trip_id=item.trip.id %}" method="post" style="display:inline;">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-outline-success btn-sm">Remove</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p>You haven’t added any trips to your wishlist yet.</p>
+    {% endif %}
+</section>
+{% endblock %}

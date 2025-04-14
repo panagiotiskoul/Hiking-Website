@@ -8,4 +8,5 @@ urlpatterns = [
     path('', views.trips_list, name='list'),
     path('new-trip/', views.trip_new, name='new-trip'),
     path('<slug:slug>', views.trip_page, name='page'),
+    path('<slug:slug>/review/', views.add_review, name='add-review'),
 ]

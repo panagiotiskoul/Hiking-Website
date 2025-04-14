@@ -59,7 +59,7 @@ class Trip(models.Model):
 
     @property
     def duration(self):
-        return (self.end_date - self.start_date).days
+        return (self.end_date - self.start_date).days + 1
 
     def __str__(self):
         return f"{self.title} - {self.location} ({self.start_date} to {self.end_date})"
@@ -85,15 +85,12 @@ class Guide(models.Model):
     ]
 
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="guide_profile", null=True, blank=True)
-    first_name = models.CharField(max_length=30)
-    last_name = models.CharField(max_length=30)
-    phone_number = models.CharField(max_length=20)
-    email = models.EmailField()
-    bio = models.TextField(blank=True, null=True)
-    experience = models.CharField(max_length=20, choices=EXPERIENCE_CHOICES)
+    phone_number = models.CharField(max_length=20, blank=True, default='Not Provided')
+    bio = models.TextField(blank=True, null=True, default='Not Provided')
+    experience = models.CharField(max_length=20, choices=EXPERIENCE_CHOICES, blank=True, default='Amateur')
 
     def __str__(self):
-        return f"{self.first_name} {self.last_name}"
+        return f"{self.user.first_name} {self.user.last_name}" if self.user else "Unnamed Guide"
 
 
 

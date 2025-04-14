@@ -130,6 +130,7 @@ p {
 /* Dark mode background */
 .dark-background {
     background-color: #262a30;  /* Dark grey background */
+    border: 2px solid #545454;
 }
 
 /* Light text color */
@@ -355,8 +356,8 @@ footer .text-reset {
 }
 
 .trip-detail {
-    font-weight: 500;
-    font-size: 18px;
+    
+    font-size: 17px;
 }
 
 
@@ -389,3 +390,13 @@ footer .text-reset {
       margin-right: 10%;
     }
   }
+
+
+
+  /* 
+
+* {
+    transition: background-color 0.5s ease, color 0.5s ease;
+}
+
+*/

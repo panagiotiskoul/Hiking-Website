@@ -1,0 +1,30 @@
+{% extends "layout.html" %}
+{% block title %}My Payments{% endblock %}
+
+{% block content %}
+<section class="container my-4">
+    <h2 class="mb-4">My Payments</h2>
+    {% if payments %}
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th scope="col">Trip Title</th>
+                    <th scope="col">Amount</th>
+                    <th scope="col">Payment Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for payment in payments %}
+                    <tr>
+                        <td>{{ payment.booking.trip.title }}</td>
+                        <td>{{ payment.amount }}$</td>
+                        <td>{{ payment.payment_date|date:"Y-m-d H:i" }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>You haven’t made any payments yet.</p>
+    {% endif %}
+</section>
+{% endblock %}

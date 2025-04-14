@@ -44,5 +44,27 @@
         <p>
             <a href="{% url 'trips:list' %}">← Go back to all trips</a>
         </p>
+
+        {% if user.is_authenticated and not user_has_reviewed %}
+            <a href="{% url 'trips:add-review' slug=trip.slug %}" class="btn btn-outline-primary">Leave a Review</a>
+        {% endif %}
+
+
+        <h3 class="mt-4">Reviews</h3>
+        {% if trip.trip_reviews.all %}
+            {% for review in trip.trip_reviews.all %}
+                <div class="review">
+                    <strong>{{ review.user.username }}</strong>
+                    <span>Rated: {{ review.rating }}/5</span>
+                    <p>{{ review.comment }}</p>
+                    <small>{{ review.created_at|date:"Y-m-d H:i" }}</small>
+                    <hr>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p>No reviews yet for this trip.</p>
+        {% endif %}
+
+
     </section>
 {% endblock %}

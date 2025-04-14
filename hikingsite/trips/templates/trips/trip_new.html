@@ -12,7 +12,7 @@
         <form class="margin30 contact-form" action="{% url 'trips:new-trip' %}" method="post" enctype="multipart/form-data">
             {% csrf_token %}
             {{ form | crispy }}
-            <button class="form-submit">Add Trip</button>
+            <button class="form-submit greenbutton btn mt-2">Create Trip</button>
         </form>
     </section>
 {% endblock %}
