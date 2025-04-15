@@ -1,0 +1,52 @@
+{% extends "layout.html" %}
+{% block title %}My Cart{% endblock %}
+
+{% block content %}
+<section class="container my-4">
+    <h2>My Cart</h2>
+    {% if cart_items %}
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>Trip</th>
+                    <th>Start Date</th>
+                    <th>Price</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in cart_items %}
+                    <tr>
+                        <td>{{ item.trip.title }}</td>
+                        <td>{{ item.trip.start_date }}</td>
+                        <td>{{ item.trip.price }}$</td>
+                        <td>
+                            <form action="{% url 'trips:remove-from-cart' item.id %}" method="post">
+                                {% csrf_token %}
+                                <button class="btn btn-sm btn-outline-danger">Remove</button>
+                            </form>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <div class="d-flex justify-content-between align-items-center my-4">
+            <a href="{% url 'trips:confirm-bookings' %}" class="btn btn-success">
+                Confirm All Bookings
+            </a>
+
+            <form action="{% url 'trips:clear-cart' %}" method="post" class="mb-0">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-outline-danger" onclick="return confirm('Are you sure you want to remove all items from your cart?');">
+                    Clear Cart
+                </button>
+            </form>
+        </div>
+        
+
+    {% else %}
+        <p>Your cart is empty.</p>
+    {% endif %}
+</section>
+{% endblock %}

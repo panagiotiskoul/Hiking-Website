@@ -4,10 +4,9 @@ from django.contrib.auth import login, logout
 from .forms import CustomUserCreationForm
 from django.contrib.auth.decorators import login_required
 from .forms import UserUpdateForm
-from trips.models import Payment, Wishlist
+from trips.models import Payment, Wishlist, Review, ViewedTrip
 from django.shortcuts import get_object_or_404
 from django.views.decorators.http import require_POST
-from trips.models import Review  
 
 # Create your views here.
 
@@ -62,7 +61,8 @@ def account_info(request):
 
 @login_required
 def my_payments(request):
-    payments = Payment.objects.filter(booking__user=request.user).select_related('booking', 'booking__trip')
+    payments = Payment.objects.filter(order__bookings__user=request.user).select_related(
+        'order').prefetch_related('order__bookings__trip').distinct()
     return render(request, 'users/my_payments.html', {'payments': payments})
 
 @login_required
@@ -94,3 +94,10 @@ def delete_review(request, review_id):
     review = get_object_or_404(Review, id=review_id, user=request.user)
     review.delete()
     return redirect('users:user-reviews')
+
+
+@login_required
+def my_activity(request):
+    recent_views = ViewedTrip.objects.filter(user=request.user).order_by('-viewed_at')[:10]
+    return render(request, 'users/my_activity.html', {'recent_views': recent_views})
+

@@ -1,0 +1,32 @@
+{% extends "layout.html" %}
+{% block title %}My Activity{% endblock %}
+
+{% block content %}
+<div class="margin30">
+    <section class="container my-5">
+        <h2 class="mb-4">Recently Viewed Trips</h2>
+    
+        {% if recent_views %}
+            <table class="table table-hover table-striped table-borderless roundtable">
+                <thead >
+                    <tr>
+                        <th>Trip</th>
+                        <th>Viewed At</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for view in recent_views %}
+                        <tr>
+                            <td><a href="{% url 'trips:page' slug=view.trip.slug %}">{{ view.trip.title }}</a></td>
+                            <td><small>{{ view.viewed_at|date:"Y-m-d H:i" }}</small></td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p>You haven't viewed any trips yet.</p>
+        {% endif %}
+    </section>
+    </div>
+    
+{% endblock %}

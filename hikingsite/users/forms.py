@@ -10,6 +10,14 @@ class CustomUserCreationForm(UserCreationForm):
     class Meta:
         model = User
         fields = ['username', 'first_name', 'last_name', 'email', 'password1', 'password2']
+        widgets = {
+            'username': forms.TextInput(attrs={'placeholder': 'Your username'}),
+            'first_name': forms.TextInput(attrs={'placeholder': 'First name'}),
+            'last_name': forms.TextInput(attrs={'placeholder': 'Last name'}),
+            'email': forms.EmailInput(attrs={'placeholder': 'example@email.com'}),
+            'password1': forms.PasswordInput(attrs={'placeholder': 'Enter password'}),
+            'password2': forms.PasswordInput(attrs={'placeholder': 'Confirm password'})
+        }
 
 
 def save(self, commit=True):
@@ -34,5 +42,6 @@ class UserUpdateForm(forms.ModelForm):
     class Meta:
         model = User
         fields = ['username', 'first_name', 'last_name', 'email']
+
 
 

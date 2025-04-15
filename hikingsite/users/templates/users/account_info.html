@@ -13,5 +13,8 @@
         {{ form|crispy }}
         <button type="submit" class="btn greenbutton mt-2">Update Info</button>
     </form>
+    <a href="{% url 'users:change-password' %}" class="btn btn-outline-primary mt-3">
+        Change Password
+    </a>
 </section>
 {% endblock %}

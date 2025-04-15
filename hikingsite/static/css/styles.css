@@ -15,6 +15,10 @@ p {
     line-height: 1.6;
 }
 
+a {
+    color: #009a3e; ;
+}
+
 .normal_title {
     text-align: center;
     margin-top: 3%;
@@ -137,6 +141,7 @@ p {
 .light-text {
     color: white;  /* White text for paragraphs and headers */
 }
+
 
 
 /* Hero section */
@@ -389,11 +394,73 @@ footer .text-reset {
       margin-left: 10%;
       margin-right: 10%;
     }
-  }
+}
+
+
+/* Reviews */
+.wrap {
+    word-break: break-word;
+}
 
 
 
-  /* 
+
+
+/* search filed dark mode,*/
+::placeholder {
+    color: #6c757d; /* default for light mode */
+}
+
+.dark-placeholder::placeholder {
+    color: #ccc !important; /* brighter for dark mode */
+}
+
+.dark-field {
+    background-color: rgb(51, 56, 64);
+}
+
+
+
+/* Navbar Dropdown Menu */
+.dropdown-menu.bg-dark .dropdown-item {
+    color: white;
+}
+
+.dropdown-menu.bg-dark .dropdown-item:hover,
+.dropdown-menu.bg-dark .dropdown-item:focus {
+    background-color: #343a40; /* Slightly lighter than #212529 */
+    color: white;
+}
+
+.dropdown-menu.bg-dark {
+    border: 2px solid #535a60; /* or white if you want a light outline */
+    border-radius: 0.5rem;
+}
+
+
+
+
+
+
+
+
+
+
+/* Views History Table */
+.roundtable {
+    /*border: 1px solid #ffffff;    /* optional: subtle border */
+    border-radius: 12px;
+    overflow: hidden; /* Important: keeps inner corners rounded */
+}
+
+td a {
+    text-decoration: none;
+    color: #009a3e;
+    font-weight: 500;
+}
+
+
+/* 
 
 * {
     transition: background-color 0.5s ease, color 0.5s ease;

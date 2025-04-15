@@ -1,0 +1,27 @@
+{% extends "layout.html" %}
+{% block title %}My Trips{% endblock %}
+
+{% block content %}
+<section class="container my-4">
+    <h2 class="mb-4">My Trips</h2>
+
+    {% if trips %}
+        <div class="row">
+            {% for trip in trips %}
+                <div class="col-md-6 col-lg-4 mb-4">
+                    <div class="card h-100">
+                        <img src="{{ trip.image.url }}" class="card-img-top" alt="{{ trip.title }}">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ trip.title }}</h5>
+                            <p class="card-text">{{ trip.start_date }} → {{ trip.end_date }}</p>
+                            <a href="{% url 'trips:edit-trip' slug=trip.slug %}" class="btn btn-outline-primary">Edit</a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p>You haven’t created any trips yet.</p>
+    {% endif %}
+</section>
+{% endblock %}

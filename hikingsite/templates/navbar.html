@@ -40,10 +40,38 @@
 
                     {% if request.user.is_authenticated and request.user.groups.all.0.name == "Guides" %}
                         <li class="nav-item flex-fill">
-                            <a class="nav-link {% if request.resolver_match.url_name == 'new-trip' %}active{% endif %}" href="{% url 'trips:new-trip' %}" role="menuitem">New Trip</a>
+                            <a class="nav-link {% if request.resolver_match.url_name == 'new-trip' %}active{% endif %}" href="{% url 'trips:new-trip' %}" role="menuitem">Add Trip</a>
                         </li>
+
+                        <li class="nav-item flex-fill">
+                            <a class="nav-link {% if request.resolver_match.url_name == 'guide-dashboard' or 'edit/' in request.path %}active{% endif %}" href="{% url 'trips:guide-dashboard' %}" role="menuitem">Edit Trip</a>
+                        </li>
+
+                        
                     {% endif %}
                 </ul>
+
+
+                <!-- Cart Button -->
+                <a href="{% url 'trips:cart' %}" class="nav-link">
+                    🛒 Cart {% if cart_item_count > 0 %}({{ cart_item_count }}){% endif %}
+                </a>
+
+
+                <!-- Cart Button -->
+                <div class="nav-btn-container">
+                    <a href="{% url 'trips:cart' %}" class="greenbutton btn position-relative" aria-label="View cart">
+                        Cart
+                        {% if cart_count and cart_count > 0 %}
+                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                            {{ cart_count }}
+                            <span class="visually-hidden">items in cart</span>
+                        </span>
+                        {% endif %}
+                    </a>
+                </div>
+
+
 
                 <!-- Dark Mode Toggle -->
                 <div class="nav-btn-container">
@@ -72,7 +100,10 @@
                             <li><a class="dropdown-item" href="{% url 'users:my-payments' %}">My Payments</a></li>
                             <li><a class="dropdown-item" href="{% url 'users:account-wishlist' %}">My Wishlist</a></li>
                             <li><a class="dropdown-item" href="{% url 'users:user-reviews' %}">My Reviews</a></li>
-
+                            <li><a class="dropdown-item" href="{% url 'users:account-activity' %}">My Activity</a></li>
+                            {% if request.user.is_authenticated and request.user.groups.all.0.name == "Guides" %}
+                                <li><a class="dropdown-item" href="{% url 'trips:new-trip' %}">Add Trip</a></li>
+                            {% endif %}
 
                             <!-- Add more items here -->
                         </ul>

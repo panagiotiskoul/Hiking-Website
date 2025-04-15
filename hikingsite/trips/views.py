@@ -1,9 +1,12 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from . models import Trip, Review
+from . models import Trip, Review, ViewedTrip, CartItem, Booking
 from django.contrib.auth.decorators import login_required
 from django.db.models import Min, Max
 from . import forms
-from .forms import ReviewForm
+from .forms import ReviewForm, CreateTrip
+from django.utils import timezone
+from django.db.models import Q
+
 
 # Create your views here.
 
@@ -17,8 +20,18 @@ def trips_list(request):
     sort_start_date = request.GET.get('sort_date')
     sort_hiking_time = request.GET.get('sort_hiking_time')
 
+    search_query = request.GET.get('search', '')
+
     # Get all trips
     trips = Trip.objects.all()
+
+    # Apply search filtering on title, location, and difficulty
+    if search_query:
+        trips = trips.filter(
+            Q(title__icontains=search_query) |
+            Q(location__icontains=search_query) |
+            Q(difficulty__icontains=search_query)
+        )
 
     # Get min/max price range
     price_range = trips.aggregate(Min('price'), Max('price'))
@@ -69,6 +82,7 @@ def trips_list(request):
         'min_distance': float(min_distance),
         'max_distance': float(max_distance),
         'current_distance': float(max_distance_filter) if max_distance_filter else float(max_distance),
+        'search_query': search_query,
     }
 
     return render(request, 'trips/trips_list.html', context)
@@ -77,15 +91,35 @@ def trips_list(request):
 
 
 def trip_page(request, slug):
-    trip = Trip.objects.get(slug=slug)
+    trip = get_object_or_404(Trip, slug=slug)
     user_has_reviewed = False
+    in_cart = False
+    already_booked = False
 
     if request.user.is_authenticated:
-        user_has_reviewed = Review.objects.filter(user=request.user, trip=trip).exists()
+        user = request.user
+
+        # Check if the user has already reviewed this trip
+        user_has_reviewed = Review.objects.filter(user=user, trip=trip).exists()
+
+        # Check if it's already in the cart
+        in_cart = CartItem.objects.filter(user=user, trip=trip).exists()
+
+        # Check if the user has already booked this trip
+        already_booked = Booking.objects.filter(user=user, trip=trip).exists()
+
+        # Save or update the viewed trip
+        ViewedTrip.objects.update_or_create(
+            user=user,
+            trip=trip,
+            defaults={'viewed_at': timezone.now()}
+        )
 
     context = {
         'trip': trip,
-        'user_has_reviewed': user_has_reviewed
+        'user_has_reviewed': user_has_reviewed,
+        'in_cart': in_cart,
+        'already_booked': already_booked,
     }
 
     return render(request, 'trips/trip_page.html', context)
@@ -113,6 +147,33 @@ def trip_new(request):
 
 
 
+@login_required
+def edit_trip(request, slug):
+    # Make sure this trip belongs to the currently logged-in guide
+    trip = get_object_or_404(Trip, slug=slug, guide=request.user.guide_profile)
+
+    if request.method == 'POST':
+        form = CreateTrip(request.POST, request.FILES, instance=trip)
+        if form.is_valid():
+            form.save()
+            return redirect('trips:page', slug=trip.slug)
+    else:
+        form = CreateTrip(instance=trip)
+
+    return render(request, 'trips/edit_trip.html', {'form': form, 'trip': trip})
+
+
+
+@login_required
+def guide_dashboard(request):
+    if hasattr(request.user, 'guide_profile'):
+        trips = Trip.objects.filter(guide=request.user.guide_profile)
+    else:
+        trips = []
+    
+    return render(request, 'trips/guide_dashboard.html', {'trips': trips})
+
+
 
 @login_required
 def add_review(request, slug):
@@ -134,3 +195,44 @@ def add_review(request, slug):
         form = ReviewForm()
 
     return render(request, 'trips/add_review.html', {'form': form, 'trip': trip})
+
+
+@login_required
+def cart_view(request):
+    cart_items = CartItem.objects.filter(user=request.user)
+    return render(request, 'trips/cart.html', {'cart_items': cart_items})
+
+@login_required
+def remove_from_cart(request, item_id):
+    item = get_object_or_404(CartItem, id=item_id, user=request.user)
+    item.delete()
+    return redirect('trips:cart')
+
+@login_required
+def confirm_bookings(request):
+    cart_items = CartItem.objects.filter(user=request.user)
+
+    for item in cart_items:
+        Booking.objects.create(
+            trip=item.trip,
+            user=request.user
+        )
+        item.delete()  # Remove from cart after booking
+
+    return redirect('trips:list')  # Or a "Thank you" page
+
+
+@login_required
+def add_to_cart(request, slug):
+    trip = get_object_or_404(Trip, slug=slug)
+
+    # Prevent duplicates
+    if not CartItem.objects.filter(user=request.user, trip=trip).exists():
+        CartItem.objects.create(user=request.user, trip=trip)
+
+    return redirect('trips:page', slug=slug)
+
+@login_required
+def clear_cart(request):
+    CartItem.objects.filter(user=request.user).delete()
+    return redirect('trips:cart')  # update to the correct trip cart view name
