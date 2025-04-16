@@ -36,6 +36,7 @@ INSTALLED_APPS = [
     'main',
     'trips',
     'recommender',
+    'admin_tools',
     'crispy_forms',
     'crispy_bootstrap5',
     'django.contrib.admin',

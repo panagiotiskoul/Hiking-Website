@@ -21,4 +21,5 @@ urlpatterns = [
     path('admin/messages/', views.admin_contact_messages, name='admin-contact-messages'),
     path('admin/messages/<int:message_id>/resolve/', views.mark_message_resolved, name='mark-message-resolved'),
 
+
 ]

@@ -2,7 +2,8 @@
 {% block title %}My Cart{% endblock %}
 
 {% block content %}
-<section class="container my-4">
+<div class="margin30 short-layout-body">
+<section class="container short-layout-wrapper my-4">
     <h2 class="normal_title">My Cart</h2>
     {% if cart_items %}
         <table class="table table-hover table-striped table-borderless roundtable">
@@ -33,7 +34,7 @@
 
         <div class="d-flex justify-content-between align-items-center my-4">
             <a href="{% url 'trips:confirm-bookings' %}" class="btn btn-success">
-                Confirm All Bookings
+                Confirm Bookings
             </a>
 
             <form action="{% url 'trips:clear-cart' %}" method="post" class="mb-0">
@@ -46,7 +47,10 @@
         
 
     {% else %}
-        <p>Your cart is empty.</p>
+    <div class="d-flex justify-content-center">
+        <p>There is nothing to view, your cart is empty.</p>
+    </div>
     {% endif %}
 </section>
+</div>
 {% endblock %}
