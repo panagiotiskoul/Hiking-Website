@@ -169,7 +169,8 @@ class ContactMessage(models.Model):
         ("Other", "Other"),
     ]
 
-    full_name = models.CharField(max_length=60)
+    first_name = models.CharField(max_length=60)
+    last_name = models.CharField(max_length=60)
     email = models.EmailField()
     subject = models.CharField(max_length=40)
     message = models.TextField(max_length=500)
@@ -178,7 +179,7 @@ class ContactMessage(models.Model):
     is_resolved = models.BooleanField(default=False)
 
     def __str__(self):
-        return f"Message from {self.full_name} ({self.email})"
+        return f"Message from {self.first_name} {self.last_name} ({self.email})"
     
 
 # Shopping Cart Model

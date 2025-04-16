@@ -36,6 +36,9 @@ $(document).ready(function(){
         $(".form-control.d-flex.h-auto").addClass("dark-field")
         $(".dropdown-menu").addClass("bg-dark");
         $(".list-group.list-group-flush").addClass("custom-list-group");
+
+        // Set icon to sun and label to "Light"
+        $("#darkModeToggle").html('<i class="bi bi-sun"></i> Light');
     }
 
     // Handle button click for dark mode toggle
@@ -138,11 +141,11 @@ $(document).ready(function(){
 
         // Toggle button text and localStorage value
         var buttonText = $("#darkModeToggle").text().trim();
-        if (buttonText === "Dark") {
-            $("#darkModeToggle").text("Light");
+        if ($("#darkModeToggle").text().trim().includes("Dark")) {
+            $("#darkModeToggle").html('<i class="bi bi-sun"></i> Light');
             localStorage.setItem("darkMode", "enabled");
         } else {
-            $("#darkModeToggle").text("Dark");
+            $("#darkModeToggle").html('<i class="bi bi-moon"></i> Dark');
             localStorage.setItem("darkMode", "disabled");
         }
     });

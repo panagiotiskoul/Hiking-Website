@@ -1,0 +1,33 @@
+{% extends 'layout.html' %}
+{% load static %}
+{% block title %}Contact Messages{% endblock %}
+
+{% block content %}
+<div class="short-layout-body">
+<div class="container short-layout-wrapper">
+    <h2 class="normal_title">Contact Messages</h2>
+    {% if messages_list %}
+        <div class="list-group mx-5">
+            {% for msg in messages_list %}
+                <div class="list-group-item mb-4 rounded-4 border border-secondary-subtle {% if msg.is_resolved %}bg-success-subtle{% else %}bg-light{% endif %}">
+                    <h4 class="mb-1">{{ msg.subject }}</h4>
+                    <p class="mb-2"><strong>From:</strong> {{ msg.first_name }} {{ msg.last_name }} ({{ msg.email }})</p>
+                    <p class="mb-2"><strong>Reason:</strong> {{ msg.reason }}</p>
+                    <p class="mb-3 wrap softext">{{ msg.message }}</p>
+                    <small>Sent on {{ msg.created_at|date:"F j, Y, H:i" }}</small>
+                    {% if not msg.is_resolved %}
+                        <form action="{% url 'users:mark-message-resolved' msg.id %}" method="post" class="mt-2">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-sm btn-outline-success my-2">Mark as Resolved</button>
+                        </form>
+                    {% else %}
+                        <p class="text-success mt-2">✓ Resolved</p>
+                    {% endif %}
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p>No contact messages yet.</p>
+    {% endif %}
+</div>
+{% endblock %}

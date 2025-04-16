@@ -52,16 +52,11 @@
                 </ul>
 
 
-                <!-- Cart Button -->
-                <a href="{% url 'trips:cart' %}" class="nav-link">
-                    🛒 Cart {% if cart_item_count > 0 %}({{ cart_item_count }}){% endif %}
-                </a>
-
-
-                <!-- Cart Button -->
+                <!-- Cart Button with Bootstrap Icon -->
                 <div class="nav-btn-container">
+                    {% if user.is_authenticated %}
                     <a href="{% url 'trips:cart' %}" class="greenbutton btn position-relative" aria-label="View cart">
-                        Cart
+                        <i class="bi bi-cart-fill me-1"></i> Cart
                         {% if cart_count and cart_count > 0 %}
                         <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
                             {{ cart_count }}
@@ -69,17 +64,12 @@
                         </span>
                         {% endif %}
                     </a>
-                </div>
-
-
-
-                <!-- Dark Mode Toggle -->
-                <div class="nav-btn-container">
-                    <button id="darkModeToggle" class="greenbutton btn" type="button" aria-label="Toggle dark mode">
-                        Dark
+                    {% endif %}
+                    <button id="darkModeToggle" class="greenbutton btn ms-3" type="button" aria-label="Toggle dark mode">
+                        <i class="bi bi-moon"></i> Dark
                     </button>
-                    
                 </div>
+
 
                 {% if user.is_authenticated %}
 
@@ -103,8 +93,13 @@
                             <li><a class="dropdown-item" href="{% url 'users:account-activity' %}">My Activity</a></li>
                             <li><a class="dropdown-item" href="{% url 'recommender:recommended' %}">Recommendations</a></li>
                             {% if request.user.is_authenticated and request.user.groups.all.0.name == "Guides" %}
-                                <li><a class="dropdown-item" href="{% url 'trips:new-trip' %}">Add Trip</a></li>
-                                <li><a class="dropdown-item" href="{% url 'trips:guide-dashboard' %}">Edit Trip</a></li>
+                                <li><a class="dropdown-item text-success" href="{% url 'trips:new-trip' %}">Add Trip</a></li>
+                                <li><a class="dropdown-item text-success" href="{% url 'trips:guide-dashboard' %}">Edit Trip</a></li>
+                            {% endif %}
+                            {% if request.user.is_superuser %}
+                                <li class="nav-item">
+                                    <a class="dropdown-item text-success" href="{% url 'users:admin-contact-messages' %}">Manage Messages</a>
+                                </li>
                             {% endif %}
 
                             <!-- Add more items here -->

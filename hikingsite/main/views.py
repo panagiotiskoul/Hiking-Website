@@ -1,5 +1,9 @@
-from django.shortcuts import render
 from recommender.views import get_recommended_trips, get_top_rated_trips
+from django.shortcuts import render, redirect
+from trips.forms import ContactMessageForm
+from django.contrib import messages
+
+
 
 def home(request):
     if request.user.is_authenticated:
@@ -22,5 +26,32 @@ def about(request):
     return render(request, 'main/about.html')
 
 def contact(request):
-    return render(request, 'main/contact.html')
+    if request.method == 'POST':
+        form = ContactMessageForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Your message has been sent successfully!")
+            return redirect('main:contact')
+    else:
+        form = ContactMessageForm()
+    return render(request, 'main/contact.html', {'form': form})
+
+
+
+
+def contact_view(request):
+    if request.method == 'POST':
+        form = ContactMessageForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Your message has been sent successfully!")
+            return redirect('contact')  # Or redirect to a thank-you page
+    else:
+        form = ContactMessageForm()
+    return render(request, 'contact.html', {'form': form})
+
+
+
+
+
 

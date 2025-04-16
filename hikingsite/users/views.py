@@ -10,6 +10,9 @@ from django.views.decorators.http import require_POST
 from django.contrib.auth.views import PasswordChangeView
 from django.contrib import messages
 from django.urls import reverse_lazy
+from django.contrib.auth.decorators import user_passes_test
+from trips.models import ContactMessage
+from django.views.decorators.http import require_POST
 
 # Create your views here.
 
@@ -117,5 +120,25 @@ def my_activity(request):
     return render(request, 'users/my_activity.html', {'recent_views': recent_views})
 
 
+
+
+
+
+# Only superusers can access
+@user_passes_test(lambda u: u.is_superuser)
+def admin_contact_messages(request):
+    messages_list = ContactMessage.objects.all().order_by('-created_at')
+    return render(request, 'users/admin_contact_messages.html', {
+        'messages_list': messages_list
+    })
+
+
+@require_POST
+@user_passes_test(lambda u: u.is_superuser)
+def mark_message_resolved(request, message_id):
+    message = ContactMessage.objects.get(id=message_id)
+    message.is_resolved = True
+    message.save()
+    return redirect('users:admin-contact-messages')
 
 

@@ -18,5 +18,7 @@ urlpatterns = [
     path('account/reviews/delete/<int:review_id>/', views.delete_review, name='delete-review'),
     path('account/activity/', views.my_activity, name='account-activity'),
     path('account/change-password/', CustomPasswordChangeView.as_view(), name='change-password'),
+    path('admin/messages/', views.admin_contact_messages, name='admin-contact-messages'),
+    path('admin/messages/<int:message_id>/resolve/', views.mark_message_resolved, name='mark-message-resolved'),
 
 ]

@@ -1,6 +1,12 @@
 from django import forms
 from . import models
 from .models import Review
+from .models import ContactMessage
+
+class ContactMessageForm(forms.ModelForm):
+    class Meta:
+        model = ContactMessage
+        fields = ['first_name', 'last_name', 'email', 'subject', 'message', 'reason']
 
 
 class CreateTrip(forms.ModelForm):

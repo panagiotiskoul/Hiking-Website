@@ -17,62 +17,70 @@
             </p>
         </div>
 
-        <!-- Contact form for the user to submit their details -->
-        <form class="contact-form">
+        <form class="contact-form needs-validation" novalidate method="post">
+            {% csrf_token %}
             <div class="row mb-5">
-
+        
                 <!-- First Name Input Field -->
                 <div class="col-12 col-md-6 col-lg-4 my-2">
                     <label for="firstName">First name:</label>
-                    <input type="text" id="firstName" class="form-control" aria-label="First name" required>                    
+                    <input type="text" name="first_name" id="firstName" class="form-control" aria-label="First name" required minlength="2" maxlength="60" placeholder="Your first name">
+                    <div class="invalid-feedback">Please enter your first name (2–60 characters).</div>
                 </div>
-
+        
                 <!-- Last Name Input Field -->
                 <div class="col-12 col-md-6 col-lg-4 my-2">
                     <label for="lastName">Last name:</label>
-                    <input type="text" id="lastName" class="form-control" aria-label="Last name" required>
+                    <input type="text" name="last_name" id="lastName" class="form-control" aria-label="Last name" required minlength="2" maxlength="60" placeholder="Your last name">
+                    <div class="invalid-feedback">Please enter your last name (2–60 characters).</div>
                 </div>
-
+        
                 <!-- Email Input Field -->
                 <div class="col-12 col-md-6 col-lg-4 my-2">
                     <label for="email">Email:</label>
-                    <input type="email" id="email" class="form-control" aria-label="Email" required>
+                    <input type="email" name="email" id="email" class="form-control" aria-label="Email" required placeholder="you@example.com">
+                    <div class="invalid-feedback">Please enter a valid email address.</div>
                 </div>
-
+        
                 <!-- Reason for Contact Dropdown -->
                 <div class="col-12 col-md-6 col-lg-4 my-2">
                     <label for="reasonForContact" class="form-label">Reason for Contacting:</label>
-                    <select id="reasonForContact" class="form-control" required>
+                    <select id="reasonForContact" name="reason" class="form-control" required>
                         <option value="" disabled selected>Select an option</option>
-                        <option value="upcoming_trips">Upcoming Trips</option>
-                        <option value="custom_trip">Custom Trip</option>
-                        <option value="trekking_tours">Trekking Tours</option>
-                        <option value="workshops">Workshops</option>
-                        <option value="shop">Shop</option>
-                        <option value="other">Other</option>
+                        <option value="Upcoming trip">Upcoming trip</option>
+                        <option value="Past trip">Past trip</option>
+                        <option value="Trip suggestion">Trip suggestion</option>
+                        <option value="Shop">Shop</option>
+                        <option value="Payment issue">Payment issue</option>
+                        <option value="Account issue">Account issue</option>
+                        <option value="Other">Other</option>
                     </select>
+                    <div class="invalid-feedback">Please select a reason for contacting.</div>
                 </div>
-
+        
                 <!-- Subject Input Field -->
                 <div class="col-12 col-md-6 col-lg-4 my-2">
                     <label for="subject" class="form-label">Subject:</label>
-                    <input type="text" id="subject" class="form-control" aria-label="Subject" required>
+                    <input type="text" name="subject" id="subject" class="form-control" aria-label="Subject" required maxlength="40" placeholder="Short subject line">
+                    <div class="invalid-feedback">Please enter a subject (max 40 characters).</div>
                 </div>
-
-                <!-- Checkbox to send a copy of the message to the user's email -->
+        
+                <!-- Checkbox to send a copy -->
                 <div class="col-12 col-md-6 col-lg-4 my-2 d-flex align-items-center">
-                    <input class="form-check-input me-2" type="checkbox" value="" id="sendEmailCheck">
+                    <input class="form-check-input me-2" type="checkbox" name="send_copy" id="sendEmailCheck">
                     <label class="form-check-label" for="sendEmailCheck">
                         Send a copy to my email
                     </label>
                 </div>
-
+        
                 <!-- Message Textarea -->
                 <div class="col-12 my-2">
                     <label for="message" class="form-label">Your Message:</label>
-                    <textarea id="message" class="form-control" aria-label="Your Message" required rows="8"></textarea>
+                    <textarea name="message" id="message" class="form-control" aria-label="Your Message" required maxlength="500" placeholder="Write your message here..." rows="8"></textarea>
+                    <div class="invalid-feedback">Please enter a message (max 500 characters).</div>
                 </div>
-
+        
+            
                 <!-- Submit Button -->
                 <div class="row justify-content-center">
                     <div class="col-12 my-3 text-center">
@@ -82,7 +90,14 @@
             </div>
         </form>
     </div>
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        {% endfor %}
+    {% endif %}
 </main>
-
 
 {% endblock %}
