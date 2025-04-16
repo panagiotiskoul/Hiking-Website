@@ -4,10 +4,10 @@ $(document).ready(function(){
     // Check if dark mode is enabled from localStorage and apply it
     if(localStorage.getItem("darkMode") === "enabled") {
         $("body").addClass("dark-background");
-        $("p, h1, h2, h3, h4, h5, h6, span, th, td, small").addClass("light-text");
+        $("p, h1, h2, h3, h4, h5, h6, span, th, td, small, li").addClass("light-text");
         $("table").addClass("table-dark");
         $("thead").addClass("thead-dark");
-        $(".card").addClass("dark-background");
+        $(".card").addClass("dark-background-card");
         $("#navbar").addClass("navbar-dark bg-dark").removeClass("navbar-light bg-light");
         $("#welcome").addClass("welcome-box-dark").removeClass("welcome-box");
         $("#footer").addClass("footer-dark");
@@ -35,6 +35,7 @@ $(document).ready(function(){
         $("span.input-group-text").addClass("dark-field");
         $(".form-control.d-flex.h-auto").addClass("dark-field")
         $(".dropdown-menu").addClass("bg-dark");
+        $(".list-group.list-group-flush").addClass("custom-list-group");
     }
 
     // Handle button click for dark mode toggle
@@ -43,8 +44,8 @@ $(document).ready(function(){
         // Toggle classes for dark mode
         $("#navbar").toggleClass("navbar-light navbar-dark bg-light bg-dark");
         $("body").toggleClass("dark-background");
-        $(".card").toggleClass("dark-background");
-        $("p, h1, h2, h3, h4, h5, h6, span, th, td, small").toggleClass("light-text");
+        $(".card").toggleClass("dark-background-card");
+        $("p, h1, h2, h3, h4, h5, h6, span, th, td, small, li").toggleClass("light-text");
         $("table").toggleClass("table-dark");
         $("thead").toggleClass("thead-dark");
         $("#welcome").toggleClass("welcome-box-dark welcome-box");
@@ -54,6 +55,7 @@ $(document).ready(function(){
         $("span.input-group-text").toggleClass("dark-field");
         $(".form-control.d-flex.h-auto").toggleClass("dark-field");
         $(".dropdown-menu").toggleClass("bg-dark");
+        $(".list-group.list-group-flush").toggleClass("custom-list-group");
 
 
         // Toggle label colors in contact form

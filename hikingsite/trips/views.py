@@ -1,11 +1,15 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from . models import Trip, Review, ViewedTrip, CartItem, Booking
+from . models import Trip, Review, ViewedTrip, CartItem, Booking, Order, Payment
 from django.contrib.auth.decorators import login_required
 from django.db.models import Min, Max
 from . import forms
 from .forms import ReviewForm, CreateTrip
 from django.utils import timezone
 from django.db.models import Q
+from django.contrib import messages
+from django.db import transaction
+from decimal import Decimal
+
 
 
 # Create your views here.
@@ -163,6 +167,17 @@ def edit_trip(request, slug):
     return render(request, 'trips/edit_trip.html', {'form': form, 'trip': trip})
 
 
+def delete_trip(request, slug):
+    trip = get_object_or_404(Trip, slug=slug, guide=request.user.guide_profile)
+
+    if request.method == 'POST':
+        trip.delete()
+        messages.success(request, "Trip successfully deleted.")
+        return redirect('trips:guide-dashboard')
+
+    return render(request, 'trips/confirm_delete.html', {'trip': trip})
+
+
 
 @login_required
 def guide_dashboard(request):
@@ -236,3 +251,36 @@ def add_to_cart(request, slug):
 def clear_cart(request):
     CartItem.objects.filter(user=request.user).delete()
     return redirect('trips:cart')  # update to the correct trip cart view name
+
+
+
+@login_required
+def confirm_bookings(request):
+    cart_items = CartItem.objects.filter(user=request.user)
+
+    if not cart_items.exists():
+        return redirect('trips:cart')
+
+    with transaction.atomic():
+        # 1. Create a new order
+        order = Order.objects.create(user=request.user)
+
+        total_amount = Decimal('0.00')
+
+        # 2. Create bookings and link to the order
+        for item in cart_items:
+            Booking.objects.create(
+                trip=item.trip,
+                user=request.user,
+                order=order
+            )
+            total_amount += item.trip.price
+            item.delete()
+
+        # 3. Create a payment
+        Payment.objects.create(
+            order=order,
+            amount=total_amount
+        )
+
+    return redirect('trips:list')  # or a custom "Thank You" page

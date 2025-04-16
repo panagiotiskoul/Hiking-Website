@@ -10,6 +10,7 @@ urlpatterns = [
     path('<slug:slug>', views.trip_page, name='page'),
     path('guide-dashboard/', views.guide_dashboard, name='guide-dashboard'),
     path('edit/<slug:slug>/', views.edit_trip, name='edit-trip'),
+    path('trip/<slug:slug>/delete/', views.delete_trip, name='delete-trip'),
 
     path('<slug:slug>/review/', views.add_review, name='add-review'),
 

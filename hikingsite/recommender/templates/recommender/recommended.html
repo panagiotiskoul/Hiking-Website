@@ -1,0 +1,27 @@
+{% extends "layout.html" %}
+{% block title %}Recommended Trips{% endblock %}
+
+{% block content %}
+<section class="container my-4">
+    <h2 class="mb-4">Recommended for You</h2>
+    {% if recommended_trips %}
+        <div class="row">
+            {% for trip in recommended_trips %}
+                <div class="col-md-6 col-lg-4 mb-4">
+                    <div class="card h-100 rounded-4">
+                        <img src="{{ trip.image.url }}" class="card-img-top rounded-top-4" alt="{{ trip.title }}">
+                        <div class="card-body">
+                            <h4 class="card-title">{{ trip.title }}</h4>
+                            <p class="card-text">{{ trip.difficulty }} - {{ trip.terrain }}</p>
+                            <p class="card-text">{{ trip.price }}€</p>
+                            <a href="{% url 'trips:page' slug=trip.slug %}" class="btn btn-outline-primary">View</a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p>No recommendations yet. Add some trips to your wishlist or browse around!</p>
+    {% endif %}
+</section>
+{% endblock %}

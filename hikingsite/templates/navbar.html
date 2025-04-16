@@ -1,6 +1,6 @@
 {% load static %}
 <header>
-    <nav id="navbar" class="navbar navbar-expand-md navbar-light bg-light sticky-top" aria-label="Navigation menu">
+    <nav id="navbar" class="navbar navbar-expand-md navbar-light bg-light" aria-label="Navigation menu">
         <div class="container-fluid">
             <!-- Logo and home link -->
             <a class="navbar-brand" href="{% url 'main:home' %}">
@@ -96,13 +96,15 @@
                             Account
                         </button>
                         <ul class="dropdown-menu" aria-labelledby="accountDropdown">
-                            <li><a class="dropdown-item" href="{% url 'users:account-info' %}">My Info</a></li>
+                            <li><a class="dropdown-item" href="{% url 'users:account-info' %}">My Information</a></li>
                             <li><a class="dropdown-item" href="{% url 'users:my-payments' %}">My Payments</a></li>
                             <li><a class="dropdown-item" href="{% url 'users:account-wishlist' %}">My Wishlist</a></li>
                             <li><a class="dropdown-item" href="{% url 'users:user-reviews' %}">My Reviews</a></li>
                             <li><a class="dropdown-item" href="{% url 'users:account-activity' %}">My Activity</a></li>
+                            <li><a class="dropdown-item" href="{% url 'recommender:recommended' %}">Recommendations</a></li>
                             {% if request.user.is_authenticated and request.user.groups.all.0.name == "Guides" %}
                                 <li><a class="dropdown-item" href="{% url 'trips:new-trip' %}">Add Trip</a></li>
+                                <li><a class="dropdown-item" href="{% url 'trips:guide-dashboard' %}">Edit Trip</a></li>
                             {% endif %}
 
                             <!-- Add more items here -->

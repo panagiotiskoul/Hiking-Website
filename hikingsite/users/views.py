@@ -7,6 +7,9 @@ from .forms import UserUpdateForm
 from trips.models import Payment, Wishlist, Review, ViewedTrip
 from django.shortcuts import get_object_or_404
 from django.views.decorators.http import require_POST
+from django.contrib.auth.views import PasswordChangeView
+from django.contrib import messages
+from django.urls import reverse_lazy
 
 # Create your views here.
 
@@ -53,16 +56,28 @@ def account_info(request):
         form = UserUpdateForm(request.POST, instance=request.user)
         if form.is_valid():
             form.save()
+            messages.success(request, "Your information has been updated successfully!")
             return redirect('main:home')  # Reload the page after saving
     else:
         form = UserUpdateForm(instance=request.user)
 
     return render(request, 'users/account_info.html', {'form': form})
 
+
+class CustomPasswordChangeView(PasswordChangeView):
+    template_name = 'users/change_password.html'
+    success_url = reverse_lazy('users:account-info')  # redirect to your account info
+
+    def form_valid(self, form):
+        messages.success(self.request, 'Your password was changed successfully.')
+        return super().form_valid(form)
+
+
+
+
 @login_required
 def my_payments(request):
-    payments = Payment.objects.filter(order__bookings__user=request.user).select_related(
-        'order').prefetch_related('order__bookings__trip').distinct()
+    payments = Payment.objects.filter(order__user=request.user).select_related('order').prefetch_related('order__bookings__trip')
     return render(request, 'users/my_payments.html', {'payments': payments})
 
 @login_required
@@ -100,4 +115,7 @@ def delete_review(request, review_id):
 def my_activity(request):
     recent_views = ViewedTrip.objects.filter(user=request.user).order_by('-viewed_at')[:10]
     return render(request, 'users/my_activity.html', {'recent_views': recent_views})
+
+
+
 

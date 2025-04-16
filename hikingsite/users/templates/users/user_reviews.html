@@ -3,20 +3,26 @@
 {% block title %}My Reviews{% endblock %}
 
 {% block content %}
-<div class="">
-<div class="container my-4">
-    <h2 class="mb-4">My Reviews</h2>
+<div class="short-layout-body">
+<div class="container short-layout-wrapper">
+    <h2 class="normal_title">My Reviews</h2>
     {% if reviews %}
-        <div class="list-group">
+        <div class="list-group mx-5">
             {% for review in reviews %}
-                <div class="list-group-item mb-3 rounded border border-secondary-subtle bg-light">
-                    <h5 class="mb-1">{{ review.trip.title }}</h5>
-                    <p class="mb-1">Rating: {{ review.rating }} / 5</p>
-                    <p class="mb-1 wrap">{{ review.comment }}</p>
+                <div class="list-group-item mb-4 rounded-4 border border-secondary-subtle bg-light">
+                    <h4 class="mb-1">{{ review.trip.title }}</h4>
+                    {% if review.rating <= 2 %}
+                        <p class="mb-3 text-danger">Rating: {{ review.rating }} / 5</p>
+                    {% elif review.rating == 3 %}
+                        <p class="mb-3 text-warning">Rating: {{ review.rating }} / 5</p>
+                    {% else %}
+                        <p class="mb-3 text-success">Rating: {{ review.rating }} / 5</p>
+                    {% endif %}
+                    <p class="mb-3 wrap softext">{{ review.comment }}</p>
                     <small>Posted on {{ review.created_at|date:"F j, Y, H:i" }}</small>
                     <form action="{% url 'users:delete-review' review.id %}" method="post" class="mt-2">
                         {% csrf_token %}
-                        <button type="submit" class="btn btn-sm btn-outline-danger">Delete</button>
+                        <button type="submit" class="btn btn-sm btn-outline-danger my-2">Delete</button>
                     </form>
                 </div>
             {% endfor %}

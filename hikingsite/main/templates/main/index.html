@@ -101,8 +101,55 @@
         <h2>
             Want to Book a Hiking Trip?
         </h2>
-        <a href="{% url 'trips:list' %}" class="btn greenbutton my-3" aria-label="Go to Trips">View Trips</a>
+        <a href="{% url 'trips:list' %}" class="btn greenbutton my-3" aria-label="Go to Trips">View All Trips</a>
     </div>
+
+
+
+
+
+
+
+
+
+
+    <section class="container my-5">
+        <hr>
+        <h2 class="normal_title">{{ section_title }}</h2>
+        
+        {% if recommended_trips %}
+            <div class="row">
+                {% for trip in recommended_trips %}
+                    <div class="col-md-4">
+                        <div class="card h-100 rounded-4 mb-4">
+                            <img src="{{ trip.image.url }}" class="card-img-top rounded-top-4" alt="{{ trip.title }}">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ trip.title }}</h5>
+                                <p class="card-text">{{ trip.start_date }} – {{ trip.end_date }}</p>
+                                <a href="{% url 'trips:page' slug=trip.slug %}" class="btn btn-outline-success">View Trip</a>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p>No recommended trips available at this time.</p>
+        {% endif %}
+    </section>
+
+    
+
+
+    {% if messages %}
+        <div class="container mt-3">
+            {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            {% endfor %}
+        </div>
+    {% endif %}
 
 
 {% endblock %}

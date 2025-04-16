@@ -134,7 +134,7 @@ a {
 /* Dark mode background */
 .dark-background {
     background-color: #262a30;  /* Dark grey background */
-    border: 2px solid #545454;
+    
 }
 
 /* Light text color */
@@ -373,6 +373,14 @@ footer .text-reset {
 }
 
 
+
+.dark-background-card {
+    background-color: #262a30;  /* Dark grey background */
+    border: 2px solid #545454;
+}
+
+
+
 /* Filters Trip Page */
 
 
@@ -459,6 +467,43 @@ td a {
     font-weight: 500;
 }
 
+
+/* Fill empty body space in short pages */
+/* Only affects short-layout pages */
+.short-layout-body {
+    height: 100%;
+    margin: 0;
+  }
+  
+.short-layout-wrapper {
+min-height: 80vh;
+display: flex;
+flex-direction: column;
+}
+  
+.short-layout-wrapper main {
+flex: 1;
+}
+
+
+
+/* Payments */
+.custom-list-group .list-group-item {
+    background-color: #262a30 !important; /* background of each item */
+    color: white;
+    border-color: #444; /* controls the dividing line */
+}
+
+.custom-card {
+    border: 2px solid #01643e; /* Your desired color and thickness */
+    border-radius: 0.75rem;
+}
+
+
+/* Reviews */
+.softext {
+    font-weight: 100;
+}
 
 /* 
 

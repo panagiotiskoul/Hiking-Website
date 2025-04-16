@@ -4,8 +4,9 @@
 {% block title %}My Info{% endblock %}
 
 {% block content %}
-<section class="container my-4">
-    <h2 class="text-center">My Info</h2>
+<div class="short-layout-body">
+<section class="container short-layout-wrapper">
+    <h2 class="normal_title">My Info</h2>
     
     <form method="post" class="contact-form margin30">
         <p>Here you can update your account Info, except your username.</p>
@@ -13,8 +14,11 @@
         {{ form|crispy }}
         <button type="submit" class="btn greenbutton mt-2">Update Info</button>
     </form>
-    <a href="{% url 'users:change-password' %}" class="btn btn-outline-primary mt-3">
-        Change Password
-    </a>
+    <div class="reg">
+        <a href="{% url 'users:change-password' %}" class="btn btn-outline-danger mt-3">
+            Change Password
+        </a>
+    </div>
 </section>
+</div>
 {% endblock %}
