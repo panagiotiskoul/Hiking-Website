@@ -11,7 +11,7 @@ class CustomUserCreationForm(UserCreationForm):
         model = User
         fields = ['username', 'first_name', 'last_name', 'email', 'password1', 'password2']
         widgets = {
-            'username': forms.TextInput(attrs={'placeholder': 'Your username'}),
+            'username': forms.TextInput(attrs={'placeholder': 'Choose username'}),
             'first_name': forms.TextInput(attrs={'placeholder': 'First name'}),
             'last_name': forms.TextInput(attrs={'placeholder': 'Last name'}),
             'email': forms.EmailInput(attrs={'placeholder': 'example@email.com'}),
