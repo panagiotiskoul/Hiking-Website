@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from . models import Trip, Review, ViewedTrip, CartItem, Booking, Order, Payment
+from . models import Trip, Review, ViewedTrip, CartItem, Booking, Order, Payment, Wishlist
 from django.contrib.auth.decorators import login_required
 from django.db.models import Min, Max
 from . import forms
@@ -99,6 +99,7 @@ def trip_page(request, slug):
     user_has_reviewed = False
     in_cart = False
     already_booked = False
+    in_wishlist = False 
 
     if request.user.is_authenticated:
         user = request.user
@@ -112,6 +113,9 @@ def trip_page(request, slug):
         # Check if the user has already booked this trip
         already_booked = Booking.objects.filter(user=user, trip=trip).exists()
 
+        # Check if the user has already saved this trip in whishlist
+        in_wishlist = Wishlist.objects.filter(user=user, trip=trip).exists()
+
         # Save or update the viewed trip
         ViewedTrip.objects.update_or_create(
             user=user,
@@ -124,6 +128,7 @@ def trip_page(request, slug):
         'user_has_reviewed': user_has_reviewed,
         'in_cart': in_cart,
         'already_booked': already_booked,
+        'in_wishlist': in_wishlist,
     }
 
     return render(request, 'trips/trip_page.html', context)
@@ -284,3 +289,10 @@ def confirm_bookings(request):
         )
 
     return redirect('trips:list')  # or a custom "Thank You" page
+
+
+@login_required
+def add_to_wishlist(request, slug):
+    trip = get_object_or_404(Trip, slug=slug)
+    Wishlist.objects.get_or_create(user=request.user, trip=trip)
+    return redirect('trips:page', slug=slug)

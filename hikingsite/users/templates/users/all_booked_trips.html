@@ -1,0 +1,37 @@
+{% extends "layout.html" %}
+{% block title %}Booked Trips Overview{% endblock %}
+
+{% block content %}
+<div class="short-layout-body">
+<section class="container short-layout-wrapper">
+    <h2 class="normal_title">All Bookings</h2>
+
+    {% if trips %}
+        {% for trip in trips %}
+            <div class="card mb-4 custom-card">
+                <div class="card-header">
+                    <p class="mt-2"><strong>{{ trip.title }}</strong> — {{ trip.start_date }} to {{ trip.end_date }}</p>
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">Participants:</h5>
+                    <ul class="list-group list-group-flush">
+                        {% for booking in trip.booked_trips.all %}
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                {{ booking.user.get_full_name|default:booking.user.username }}
+                                <span>{{ booking.booking_date|date:"Y-m-d H:i" }}</span>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                    <hr>
+                    <h5 class="text-end">Total Participants: <strong>{{ trip.booked_trips.count }}</strong></h5>
+                </div>
+            </div>
+        {% endfor %}
+    {% else %}
+        <div class="d-flex justify-content-center">
+            <p>There is nothing to view, your cart is empty.</p>
+        </div>
+    {% endif %}
+</section>
+</div>
+{% endblock %}

@@ -3,18 +3,38 @@
 
 {% block content %}
 <section class="container my-4">
-    <h2 class="mb-4">Recommended for You</h2>
+    <h2 class="normal_title">{{ section_title }}</h2>
     {% if recommended_trips %}
         <div class="row">
             {% for trip in recommended_trips %}
-                <div class="col-md-6 col-lg-4 mb-4">
-                    <div class="card h-100 rounded-4">
-                        <img src="{{ trip.image.url }}" class="card-img-top rounded-top-4" alt="{{ trip.title }}">
+                <div class="col-md-6 col-lg-4">
+                    <div class="card rounded-4 my-3">
+                        <a href="{% url 'trips:page' slug=trip.slug %}">
+                            <img src="{{ trip.image.url }}" class="card-img-top rounded-top-4" alt="{{ trip.title }}">
+                        </a>
                         <div class="card-body">
-                            <h4 class="card-title">{{ trip.title }}</h4>
-                            <p class="card-text">{{ trip.difficulty }} - {{ trip.terrain }}</p>
-                            <p class="card-text">{{ trip.price }}€</p>
-                            <a href="{% url 'trips:page' slug=trip.slug %}" class="btn btn-outline-primary">View</a>
+                            <h2 class="card-title">{{ trip.title }}</h2>
+                            <hr class="seperator-dark">
+                            <div class="justify">
+                                <div class="d-flex justify-content-between">
+                                    <p class="trip-detail mb-2"><b>Date:</b> {{ trip.start_date }} </p>
+                                    <p class="trip-detail mb-2"><b>Duration:</b> {{ trip.duration }} days</p>
+                        
+                                </div>
+                                <div class="d-flex justify-content-between">
+                                    <p class="trip-detail"><b>Price:</b> {{ trip.price }}$</p>
+                                    <p class="trip-detail mb-2
+                                    {% if trip.difficulty == 'Easy' %}text-success
+                                    {% elif trip.difficulty == 'Moderate' %}text-info
+                                    {% elif trip.difficulty == 'Hard' %}text-warning
+                                    {% elif trip.difficulty == 'Extreme' %}text-danger
+                                    {% endif %}">
+                                    <b>Difficulty:</b> {{ trip.difficulty }}
+                                </p>
+
+                                </div>
+                                <a href="{% url 'trips:page' slug=trip.slug %}" class="greenbutton btn">View</a>
+                            </div>
                         </div>
                     </div>
                 </div>

@@ -4,15 +4,15 @@ from django.contrib.auth import login, logout
 from .forms import CustomUserCreationForm
 from django.contrib.auth.decorators import login_required
 from .forms import UserUpdateForm
-from trips.models import Payment, Wishlist, Review, ViewedTrip
+from trips.models import Payment, Wishlist, Review, ViewedTrip, Trip, Booking
 from django.shortcuts import get_object_or_404
 from django.views.decorators.http import require_POST
 from django.contrib.auth.views import PasswordChangeView
 from django.contrib import messages
 from django.urls import reverse_lazy
 from django.contrib.auth.decorators import user_passes_test
-from trips.models import ContactMessage
 from django.views.decorators.http import require_POST
+from django.db.models import Prefetch
 
 # Create your views here.
 
@@ -124,21 +124,16 @@ def my_activity(request):
 
 
 
-# Only superusers can access
-@user_passes_test(lambda u: u.is_superuser)
-def admin_contact_messages(request):
-    messages_list = ContactMessage.objects.all().order_by('-created_at')
-    return render(request, 'users/admin_contact_messages.html', {
-        'messages_list': messages_list
+def is_guide(user):
+    return hasattr(user, 'guide_profile')
+
+
+@login_required
+@user_passes_test(is_guide)
+def all_booked_trips_view(request):
+    # Only trips with at least one booking
+    trips_with_bookings = Trip.objects.filter(booked_trips__isnull=False).distinct().prefetch_related('booked_trips__user')
+
+    return render(request, 'users/all_booked_trips.html', {
+        'trips': trips_with_bookings
     })
-
-
-@require_POST
-@user_passes_test(lambda u: u.is_superuser)
-def mark_message_resolved(request, message_id):
-    message = ContactMessage.objects.get(id=message_id)
-    message.is_resolved = True
-    message.save()
-    return redirect('users:admin-contact-messages')
-
-

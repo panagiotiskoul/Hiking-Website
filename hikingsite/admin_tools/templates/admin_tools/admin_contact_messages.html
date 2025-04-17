@@ -16,7 +16,7 @@
                     <p class="mb-3 wrap softext">{{ msg.message }}</p>
                     <small>Sent on {{ msg.created_at|date:"F j, Y, H:i" }}</small>
                     {% if not msg.is_resolved %}
-                        <form action="{% url 'users:mark-message-resolved' msg.id %}" method="post" class="mt-2">
+                        <form action="{% url 'admin-tools:mark-message-resolved' msg.id %}" method="post" class="mt-2">
                             {% csrf_token %}
                             <button type="submit" class="btn btn-sm btn-outline-success my-2">Mark as Resolved</button>
                         </form>

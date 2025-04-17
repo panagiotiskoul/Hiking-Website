@@ -77,6 +77,18 @@
                     <button type="submit" class="btn btn-success">Add to Cart</button>
                 </form>
             {% endif %}
+
+            {% if in_wishlist %}
+                <p class="text-info">Already in wishlist</p>
+            {% else %}
+                {% if already_booked %}
+                {% else %}
+                    <form action="{% url 'trips:add-to-wishlist' slug=trip.slug %}" method="post">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-outline-warning">Add to Wishlist</button>
+                    </form>
+                {% endif %}
+            {% endif %}
         {% endif %}
         {% if user.is_authenticated and trip.guide == user.guide_profile %}
             <a href="{% url 'trips:edit-trip' slug=trip.slug %}" class="btn btn-outline-primary">Edit Trip</a>

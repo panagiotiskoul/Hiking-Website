@@ -1,11 +1,14 @@
 from django.contrib.auth.models import User, Group
 from django.contrib.auth.decorators import user_passes_test
 from django.shortcuts import render, redirect, get_object_or_404
-from trips.models import Guide
-
+from trips.models import Guide, ContactMessage
+from django.views.decorators.http import require_POST
 
 # Create your views here.
 
+
+# Lets the Admin/superuser view a list of users within the website 
+# and promote or delete a user
 @user_passes_test(lambda u: u.is_superuser)
 def manage_users(request):
     users = User.objects.exclude(is_superuser=True)
@@ -28,3 +31,21 @@ def delete_user(request, user_id):
     user = get_object_or_404(User, id=user_id)
     user.delete()
     return redirect('admin-tools:manage-users')
+
+
+
+# Lets the Admin/superuser read messages from within the website and mark the as resolved
+@user_passes_test(lambda u: u.is_superuser)
+def admin_contact_messages(request):
+    messages_list = ContactMessage.objects.all().order_by('-created_at')
+    return render(request, 'admin_tools/admin_contact_messages.html', {
+        'messages_list': messages_list
+    })
+
+@require_POST
+@user_passes_test(lambda u: u.is_superuser)
+def mark_message_resolved(request, message_id):
+    message = ContactMessage.objects.get(id=message_id)
+    message.is_resolved = True
+    message.save()
+    return redirect('admin-tools:admin-contact-messages')

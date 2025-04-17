@@ -19,4 +19,5 @@ urlpatterns = [
     path('confirm-bookings/', views.confirm_bookings, name='confirm-bookings'),
     path('cart/add/<slug:slug>/', views.add_to_cart, name='add-to-cart'),
     path('my-cart/clear/', views.clear_cart, name='clear-cart'),
+    path('wishlist/add/<slug:slug>/', views.add_to_wishlist, name='add-to-wishlist'),
 ]

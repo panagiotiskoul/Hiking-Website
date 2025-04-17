@@ -27,7 +27,7 @@
                     </li>
             
                     <li class="nav-item flex-fill">
-                        <a class="nav-link {% if request.resolver_match.url_name == 'list' %}active{% endif %}" href="{% url 'trips:list' %}" role="menuitem">Trips</a>
+                        <a class="nav-link {% if request.resolver_match.url_name == 'list' or 'trips/' in request.path %}active{% endif %}" href="{% url 'trips:list' %}" role="menuitem">Trips</a>
                     </li>
             
                     <li class="nav-item flex-fill">
@@ -48,13 +48,17 @@
                             <a class="nav-link {% if request.resolver_match.url_name == 'guide-dashboard' or 'edit/' in request.path %}active{% endif %}" href="{% url 'trips:guide-dashboard' %}" role="menuitem">Edit Trip</a>
                         </li>
 
+                        <li class="nav-item flex-fill">
+                            <a class="nav-link {% if request.resolver_match.url_name == 'all-booked' %}active{% endif %}" href="{% url 'users:all-booked' %}" role="menuitem">Bookings</a>
+                        </li>
+
                         
                     {% endif %}
 
                     {% if request.user.is_superuser %}
                         <hr>
                         <li class="nav-item flex-fill">
-                            <a class="nav-link {% if request.resolver_match.url_name == 'manage-users' %}active{% endif %}" href="{% url 'users:admin-contact-messages' %}" role="menuitem">Messages</a>
+                            <a class="nav-link {% if request.resolver_match.url_name == 'admin-contact-messages' %}active{% endif %}" href="{% url 'admin-tools:admin-contact-messages' %}" role="menuitem">Messages</a>
                         </li>
                         <li class="nav-item flex-fill">
                             <a class="nav-link {% if request.resolver_match.url_name == 'manage-users' %}active{% endif %}" href="{% url 'admin-tools:manage-users' %}" role="menuitem">Users</a>
@@ -110,11 +114,13 @@
                                 <hr>
                                 <li><a class="dropdown-item text-success" href="{% url 'trips:new-trip' %}">Add Trip</a></li>
                                 <li><a class="dropdown-item text-success" href="{% url 'trips:guide-dashboard' %}">Edit Trip</a></li>
+                                <li><a class="dropdown-item text-success" href="{% url 'users:all-booked' %}">View All Bookings</a></li>
+
                             {% endif %}
                             {% if request.user.is_superuser %}
                                 <hr>
                                 <li class="nav-item">
-                                    <a class="dropdown-item text-success" href="{% url 'users:admin-contact-messages' %}">Manage Messages</a>
+                                    <a class="dropdown-item text-success" href="{% url 'admin-tools:admin-contact-messages' %}">Manage Messages</a>
                                     <a class="dropdown-item text-success" href="{% url 'admin-tools:manage-users' %}">Manage Users</a>
                                     <a class="dropdown-item text-success" href="/admin/">Admin Panel</a>
                                 </li>

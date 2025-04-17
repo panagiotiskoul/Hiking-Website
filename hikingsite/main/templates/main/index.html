@@ -1,11 +1,7 @@
-<!-- templates/main/index.html -->
 {% extends "layout.html" %}
 {% load static %}
 {% block title %}Index | North Hiking{% endblock %}
 {% block content %}
-
-<!-- All the <section> and content inside <main> from old index.html -->
-<!-- Hero section, carousel, table, etc. here -->
 
 <main aria-label="Main content">
     <!-- Hero section with a welcoming message -->
@@ -104,22 +100,13 @@
         <a href="{% url 'trips:list' %}" class="btn greenbutton my-3" aria-label="Go to Trips">View All Trips</a>
     </div>
 
-
-
-
-
-
-
-
-
-
     <section class="container my-5">
         <hr>
         <h2 class="normal_title">{{ section_title }}</h2>
         
         {% if recommended_trips %}
             <div class="row">
-                {% for trip in recommended_trips %}
+                {% for trip in recommended_trips|slice:":3" %}
                     <div class="col-md-6 col-lg-4">
                         <div class="card rounded-4 my-3">
                             <a href="{% url 'trips:page' slug=trip.slug %}">
@@ -158,10 +145,5 @@
         {% endif %}
         </div>
     </section>
-
-    
-
-
-
 
 {% endblock %}
