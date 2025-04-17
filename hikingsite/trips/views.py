@@ -5,7 +5,7 @@ from django.db.models import Min, Max
 from . import forms
 from .forms import ReviewForm, CreateTrip
 from django.utils import timezone
-from django.db.models import Q
+from django.db.models import Q, Sum
 from django.contrib import messages
 from django.db import transaction
 from decimal import Decimal
@@ -143,11 +143,9 @@ def trip_new(request):
             newtrip = form.save(commit=False)
             # Automatically assign the logged-in guide
             if hasattr(request.user, 'guide_profile'):
-                print("Guide profile exists:", request.user.guide_profile) #debug print
                 newtrip.guide = request.user.guide_profile
-            else:
-                print("No guide profile found for user:", request.user.username) #debug print
             newtrip.save()
+            messages.success(request, "New trip created successfully!")
             return redirect('trips:list')
     else:
         form = forms.CreateTrip()
@@ -165,6 +163,7 @@ def edit_trip(request, slug):
         form = CreateTrip(request.POST, request.FILES, instance=trip)
         if form.is_valid():
             form.save()
+            messages.success(request, "Trip information successfully modified!")
             return redirect('trips:page', slug=trip.slug)
     else:
         form = CreateTrip(instance=trip)
@@ -217,30 +216,15 @@ def add_review(request, slug):
     return render(request, 'trips/add_review.html', {'form': form, 'trip': trip})
 
 
+
 @login_required
 def cart_view(request):
     cart_items = CartItem.objects.filter(user=request.user)
-    return render(request, 'trips/cart.html', {'cart_items': cart_items})
-
-@login_required
-def remove_from_cart(request, item_id):
-    item = get_object_or_404(CartItem, id=item_id, user=request.user)
-    item.delete()
-    return redirect('trips:cart')
-
-@login_required
-def confirm_bookings(request):
-    cart_items = CartItem.objects.filter(user=request.user)
-
-    for item in cart_items:
-        Booking.objects.create(
-            trip=item.trip,
-            user=request.user
-        )
-        item.delete()  # Remove from cart after booking
-
-    return redirect('trips:list')  # Or a "Thank you" page
-
+    subtotal = sum(item.trip.price for item in cart_items)  # Calculate subtotal
+    return render(request, 'trips/cart.html', {
+        'cart_items': cart_items,
+        'subtotal': subtotal
+    })
 
 @login_required
 def add_to_cart(request, slug):
@@ -252,11 +236,18 @@ def add_to_cart(request, slug):
 
     return redirect('trips:page', slug=slug)
 
+
+@login_required
+def remove_from_cart(request, item_id):
+    item = get_object_or_404(CartItem, id=item_id, user=request.user)
+    item.delete()
+    return redirect('trips:cart')
+
+
 @login_required
 def clear_cart(request):
     CartItem.objects.filter(user=request.user).delete()
     return redirect('trips:cart')  # update to the correct trip cart view name
-
 
 
 @login_required
@@ -287,6 +278,9 @@ def confirm_bookings(request):
             order=order,
             amount=total_amount
         )
+
+        messages.success(request, "Your bookings were successfully confirmed and payment completed!")
+        return redirect('trips:list')
 
     return redirect('trips:list')  # or a custom "Thank You" page
 

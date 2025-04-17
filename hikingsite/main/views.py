@@ -31,27 +31,7 @@ def contact(request):
         if form.is_valid():
             form.save()
             messages.success(request, "Your message has been sent successfully!")
-            return redirect('main:contact')
+            return redirect('main:home')
     else:
         form = ContactMessageForm()
     return render(request, 'main/contact.html', {'form': form})
-
-
-
-
-def contact_view(request):
-    if request.method == 'POST':
-        form = ContactMessageForm(request.POST)
-        if form.is_valid():
-            form.save()
-            messages.success(request, "Your message has been sent successfully!")
-            return redirect('contact')  # Or redirect to a thank-you page
-    else:
-        form = ContactMessageForm()
-    return render(request, 'contact.html', {'form': form})
-
-
-
-
-
-

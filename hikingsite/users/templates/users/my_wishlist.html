@@ -3,8 +3,8 @@
 
 {% block content %}
 <div class="short-layout-body">
-<section class="container mt-5 short-layout-wrapper">
-    <h2>My Wishlist</h2>
+<section class="container short-layout-wrapper">
+    <h2 class="normal_title">My Wishlist</h2>
 
     {% if wishlist_items %}
         <div class="row">
@@ -26,7 +26,9 @@
             {% endfor %}
         </div>
     {% else %}
+    <div class="d-flex justify-content-center">
         <p>You haven’t added any trips to your wishlist yet.</p>
+    </div>
     {% endif %}
 </section>
 {% endblock %}

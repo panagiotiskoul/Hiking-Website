@@ -127,7 +127,6 @@ def my_activity(request):
 def is_guide(user):
     return hasattr(user, 'guide_profile')
 
-
 @login_required
 @user_passes_test(is_guide)
 def all_booked_trips_view(request):
