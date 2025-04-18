@@ -8,7 +8,7 @@
     <h2 class="normal_title">My Payments</h2>
     {% if payments %}
         {% for payment in payments %}
-            <div class="card mb-4 custom-card">
+            <div class="card mb-4 rounded-4 shadow-sm">
                 <div class="card-header">
                     <p class="mt-2"><strong>Payment ID #{{ payment.id }}</strong> — {{ payment.payment_date|date:"Y-m-d H:i" }}</p>
                 </div>

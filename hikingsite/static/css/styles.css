@@ -505,6 +505,14 @@ flex: 1;
     font-weight: 100;
 }
 
+
+/* Reviews Form */
+.small-slider {
+    width: 50%;      /* Smaller width */
+    height: 0.5rem;     /* Thinner track */
+    margin-top: 0.5rem; /* Some spacing */
+}
+
 /* 
 
 * {

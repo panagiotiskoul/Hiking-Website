@@ -143,7 +143,7 @@
                 {% else %}
                     <!-- Login Button -->
                     <div class="nav-btn-container">
-                        <a href="{% url 'users:login' %}" class="btn btn-outline-success reg-btn" aria-label="Login">Login</a>
+                        <a href="{% url 'users:login' %}?next={{ request.path }}" class="btn btn-outline-success reg-btn" aria-label="Login">Login</a>
                     </div>
                 {% endif %}
             </div>

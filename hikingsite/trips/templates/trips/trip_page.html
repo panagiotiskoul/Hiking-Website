@@ -1,76 +1,71 @@
 {% extends "layout.html" %}
 {% load static %}
 
-{% block title %}
-    {{ trip.title }} - {{ trip.location }}
-{% endblock %}
+{% block title %}{{ trip.title }} - {{ trip.location }}{% endblock %}
 
 {% block content %}
-    <section>
-        <!-- Trip Banner -->
-        <img 
-            class="banner"
-            src="{{ trip.image.url }}"
-            alt="{{ trip.title }} banner"
-        />
+<section class="container my-4">
+    <div class="row g-4 align-items-start">
+        <!-- Image column (left) -->
+        <div class="col-md-6">
+            <img src="{{ trip.image.url }}" alt="{{ trip.title }} banner" class="img-fluid rounded-4 shadow w-100">
+        </div>
 
-        <!-- Title and Location -->
-        <h1>{{ trip.title }} - {{ trip.location }}</h1>
-
-        <!-- Dates and Duration -->
-        <p><strong>Dates:</strong> {{ trip.start_date }} to {{ trip.end_date }}</p>
-        <p><strong>Total Duration:</strong> {{ trip.duration }} days</p>
-        <p><strong>Hiking Time:</strong> {{ trip.hiking_duration }} hours</p>
-
-        <!-- Difficulty & Terrain -->
-        <p><strong>Difficulty:</strong> {{ trip.difficulty }}</p>
-        <p><strong>Terrain:</strong> {{ trip.terrain }}</p>
-
-        <!-- Distance & Altitude -->
-        <p><strong>Distance:</strong> {{ trip.distance }} km</p>
-        <p><strong>Altitude Change:</strong> {{ trip.altitude_difference }} m</p>
-
-        <!-- Max Participants & Price -->
-        <p><strong>Max Participants:</strong> {{ trip.max_participants }}</p>
-        <p><strong>Price:</strong> ${{ trip.price }}</p>
-
-        <!-- Guide -->
-        <p><strong>Guide:</strong> {{ trip.guide }}</p>
-
-        <!-- Description -->
-        <p><strong>Description:</strong> {{ trip.description }}</p>
-
-        <!-- Navigation -->
-        <p>
-            <a href="{% url 'trips:list' %}">← Go back to all trips</a>
-        </p>
-
-        {% if user.is_authenticated and not user_has_reviewed %}
-            <a href="{% url 'trips:add-review' slug=trip.slug %}" class="btn btn-outline-primary">Leave a Review</a>
-        {% endif %}
-
-
-        <h3 class="mt-4">Reviews</h3>
-        {% if trip.trip_reviews.all %}
-            {% for review in trip.trip_reviews.all %}
-                <div class="review">
-                    <strong>{{ review.user.username }}</strong>
-                    <span>Rated: {{ review.rating }}/5</span>
-                    <p>{{ review.comment }}</p>
-                    <small>{{ review.created_at|date:"Y-m-d H:i" }}</small>
-                    <hr>
+        <!-- Info card column (right) -->
+        <div class="col-md-6">
+            <div class="card rounded-4 shadow-sm ">
+                <div class="card-body">
+                    <h2 class="card-title">{{ trip.title }} </h2>
+                    
+                    <hr class="seperator-dark">
+                    <div class="row">
+                        <div class="col-12">
+                            <p><strong>Dates:</strong> {{ trip.start_date }} to {{ trip.end_date }}</p>
+                            <p><strong>Total Duration:</strong> {{ trip.duration }} days</p>
+                            <p><strong>Lacation:</strong> {{ trip.location }}</p>
+                            <p><strong>Hiking Time:</strong> {{ trip.hiking_duration }} hours</p>
+                            <p><strong>Distance:</strong> {{ trip.distance }} km</p>
+                            <p><strong>Altitude Gain:</strong> {{ trip.altitude_difference }} m</p>
+                            <p><strong>Terrain:</strong> {{ trip.terrain }}</p>
+                            <p><strong>Max Participants:</strong> {{ trip.max_participants }}</p>
+                            <p><strong>Available Positions:</strong> {{ available_positions  }}</p>
+                            <p><strong>Guide:</strong> {{ trip.guide }}</p>
+                            <p>
+                                <strong>Difficulty:</strong> 
+                                <span class="{% if trip.difficulty == 'Easy' %}text-success
+                                             {% elif trip.difficulty == 'Moderate' %}text-info
+                                             {% elif trip.difficulty == 'Hard' %}text-warning
+                                             {% elif trip.difficulty == 'Extreme' %}text-danger
+                                             {% endif %}">
+                                    {{ trip.difficulty }}
+                                </span>
+                            </p>
+                            <p><strong>Price:</strong> ${{ trip.price }}</p>
+                        </div>
+                    </div>
                 </div>
-            {% endfor %}
-        {% else %}
-            <p>No reviews yet for this trip.</p>
-        {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Description -->
+    <div class="card my-4 rounded-4 shadow-sm">
+        <div class="card-body">
+            <h4>Description</h4>
+            <p class="justify mb-1">{{ trip.description }}</p>
+        </div>
+    </div>
 
 
+    <!-- Action Buttons -->
+    <div class="mb-4 d-flex flex-wrap gap-3">
         {% if user.is_authenticated %}
+            
+
             {% if already_booked %}
-                <p class="text-danger">You have already booked this trip.</p>
+                <p class="text-success my-0">Already booked.</p>
             {% elif in_cart %}
-                <p class="text-info">Already in cart</p>
+                <p class="text-info my-0">Already in cart</p>
             {% else %}
                 <form action="{% url 'trips:add-to-cart' slug=trip.slug %}" method="post">
                     {% csrf_token %}
@@ -79,21 +74,50 @@
             {% endif %}
 
             {% if in_wishlist %}
-                <p class="text-info">Already in wishlist</p>
-            {% else %}
-                {% if already_booked %}
-                {% else %}
-                    <form action="{% url 'trips:add-to-wishlist' slug=trip.slug %}" method="post">
-                        {% csrf_token %}
-                        <button type="submit" class="btn btn-outline-warning">Add to Wishlist</button>
-                    </form>
-                {% endif %}
+                <p class="text-warning my-0">Already wishlisted.</p>
+            {% elif not already_booked %}
+                <form action="{% url 'trips:add-to-wishlist' slug=trip.slug %}" method="post">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-outline-warning">Add to Wishlist</button>
+                </form>
             {% endif %}
-        {% endif %}
-        {% if user.is_authenticated and trip.guide == user.guide_profile %}
-            <a href="{% url 'trips:edit-trip' slug=trip.slug %}" class="btn btn-outline-primary">Edit Trip</a>
-        {% endif %}
 
+            {% if not user_has_reviewed %}
+                <a href="{% url 'trips:add-review' slug=trip.slug %}" class="btn btn-outline-primary">Review</a>
+            {% else %}
+                <p class="text-primary my-0">Already reviewd.</p>
+            {% endif %}
 
-    </section>
+            {% if trip.guide == user.guide_profile %}
+                <a href="{% url 'trips:edit-trip' slug=trip.slug %}" class="btn btn-outline-danger">Edit Trip</a>
+            {% endif %}
+        {% else %}
+            <!-- Login Button -->
+            <div class="nav-btn-container">
+                <a href="{% url 'users:login' %}?next={{ request.path }}" class="btn btn-outline-success reg-btn" aria-label="Login">Login to Book</a>
+            </div>
+        {% endif %}
+        <a href="{% url 'trips:list' %}" class="btn btn-outline-secondary">← Back to Trips</a>
+    </div>
+
+    <!-- Reviews -->
+    <div class="card rounded-4 shadow-sm">
+        <div class="card-body">
+            <h3 class="card-title">Reviews</h3>
+            <hr>
+            {% if trip.trip_reviews.all %}
+                {% for review in trip.trip_reviews.all %}
+                    <div class="">
+                        <p class="me-2"><b>{{ review.user.username }}</b> rated: <b>{{ review.rating }}/5</b> </p>
+                        <p class="mb-1">{{ review.comment }}</p>
+                        <small class="text-muted">{{ review.created_at|date:"Y-m-d H:i" }}</small>
+                        {% if not forloop.last %}<hr>{% endif %}
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p class="">No reviews yet for this trip.</p>
+            {% endif %}
+        </div>
+    </div>
+</section>
 {% endblock %}

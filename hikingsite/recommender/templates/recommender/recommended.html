@@ -8,7 +8,7 @@
         <div class="row">
             {% for trip in recommended_trips %}
                 <div class="col-md-6 col-lg-4">
-                    <div class="card rounded-4 my-3">
+                    <div class="card rounded-4 shadow-sm my-3">
                         <a href="{% url 'trips:page' slug=trip.slug %}">
                             <img src="{{ trip.image.url }}" class="card-img-top rounded-top-4" alt="{{ trip.title }}">
                         </a>

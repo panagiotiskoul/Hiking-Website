@@ -147,4 +147,8 @@ MESSAGE_TAGS = {
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-CRISPY_TEMPLATE_PACK = "bootstrap5"  
+CRISPY_TEMPLATE_PACK = "bootstrap5" 
+
+HANDLER403 = 'main.views.permission_denied_view'
+
+LOGIN_URL = '/users/login/'

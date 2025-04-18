@@ -34,8 +34,20 @@ class CreateTrip(forms.ModelForm):
         
 
 class ReviewForm(forms.ModelForm):
-    rating = forms.IntegerField(min_value=1, max_value=5, widget=forms.NumberInput(attrs={'type': 'range', 'min': 1, 'max': 5}))
-    
+    rating = forms.IntegerField(
+        label="Rating",
+        min_value=1,
+        max_value=5,
+        widget=forms.NumberInput(attrs={
+            'type': 'range',
+            'min': '1',
+            'max': '5',
+            'step': '1',
+            'class': 'form-range small-slider',
+            'id': 'id_rating' 
+        })
+    )
+
     class Meta:
         model = Review
         fields = ['rating', 'comment']

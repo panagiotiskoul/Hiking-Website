@@ -9,7 +9,7 @@
     {% if reviews %}
         <div class="list-group mx-5">
             {% for review in reviews %}
-                <div class="list-group-item mb-4 rounded-4 border border-secondary-subtle bg-light">
+                <div class="list-group-item mb-4 shadow-sm rounded-4 border border-secondary-subtle bg-light">
                     <h4 class="mb-1">{{ review.trip.title }}</h4>
                     {% if review.rating <= 2 %}
                         <p class="mb-3 text-danger">Rating: {{ review.rating }} / 5</p>

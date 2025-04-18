@@ -35,3 +35,8 @@ def contact(request):
     else:
         form = ContactMessageForm()
     return render(request, 'main/contact.html', {'form': form})
+
+
+
+def permission_denied_view(request, exception=None):
+    return render(request, '403.html', status=403)

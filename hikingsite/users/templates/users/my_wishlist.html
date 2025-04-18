@@ -10,7 +10,7 @@
         <div class="row">
             {% for item in wishlist_items %}
                 <div class="col-md-6 col-lg-3 my-3">
-                    <div class="card h-100">
+                    <div class="card h-100 shadow-sm">
                         <img src="{{ item.trip.image.url }}" class="card-img-top" alt="{{ item.trip.title }}">
                         <div class="card-body">
                             <h4 class="card-title">{{ item.trip.title }}</h4>

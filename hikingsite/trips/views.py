@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from . models import Trip, Review, ViewedTrip, CartItem, Booking, Order, Payment, Wishlist
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, user_passes_test
 from django.db.models import Min, Max
 from . import forms
 from .forms import ReviewForm, CreateTrip
@@ -9,6 +9,7 @@ from django.db.models import Q, Sum
 from django.contrib import messages
 from django.db import transaction
 from decimal import Decimal
+from django.core.exceptions import PermissionDenied
 
 
 
@@ -123,74 +124,25 @@ def trip_page(request, slug):
             defaults={'viewed_at': timezone.now()}
         )
 
+    # Calculates available positions
+    available_positions = trip.max_participants - trip.booked_trips.count()
+
     context = {
         'trip': trip,
         'user_has_reviewed': user_has_reviewed,
         'in_cart': in_cart,
         'already_booked': already_booked,
         'in_wishlist': in_wishlist,
+        'available_positions': available_positions,
     }
 
     return render(request, 'trips/trip_page.html', context)
 
-
-
-@login_required(login_url="/users/login/")
-def trip_new(request):
-    if request.method == 'POST':
-        form = forms.CreateTrip(request.POST, request.FILES)
-        if form.is_valid():
-            newtrip = form.save(commit=False)
-            # Automatically assign the logged-in guide
-            if hasattr(request.user, 'guide_profile'):
-                newtrip.guide = request.user.guide_profile
-            newtrip.save()
-            messages.success(request, "New trip created successfully!")
-            return redirect('trips:list')
-    else:
-        form = forms.CreateTrip()
-
-    return render(request, 'trips/trip_new.html', { 'form': form })
+def is_guide(user):
+    return user.is_authenticated and hasattr(user, 'guide_profile')
 
 
 
-@login_required
-def edit_trip(request, slug):
-    # Make sure this trip belongs to the currently logged-in guide
-    trip = get_object_or_404(Trip, slug=slug, guide=request.user.guide_profile)
-
-    if request.method == 'POST':
-        form = CreateTrip(request.POST, request.FILES, instance=trip)
-        if form.is_valid():
-            form.save()
-            messages.success(request, "Trip information successfully modified!")
-            return redirect('trips:page', slug=trip.slug)
-    else:
-        form = CreateTrip(instance=trip)
-
-    return render(request, 'trips/edit_trip.html', {'form': form, 'trip': trip})
-
-
-def delete_trip(request, slug):
-    trip = get_object_or_404(Trip, slug=slug, guide=request.user.guide_profile)
-
-    if request.method == 'POST':
-        trip.delete()
-        messages.success(request, "Trip successfully deleted.")
-        return redirect('trips:guide-dashboard')
-
-    return render(request, 'trips/confirm_delete.html', {'trip': trip})
-
-
-
-@login_required
-def guide_dashboard(request):
-    if hasattr(request.user, 'guide_profile'):
-        trips = Trip.objects.filter(guide=request.user.guide_profile)
-    else:
-        trips = []
-    
-    return render(request, 'trips/guide_dashboard.html', {'trips': trips})
 
 
 
@@ -215,6 +167,19 @@ def add_review(request, slug):
 
     return render(request, 'trips/add_review.html', {'form': form, 'trip': trip})
 
+
+
+@login_required
+def add_to_wishlist(request, slug):
+    trip = get_object_or_404(Trip, slug=slug)
+    Wishlist.objects.get_or_create(user=request.user, trip=trip)
+    return redirect('trips:page', slug=slug)
+
+
+
+#----------------------------------
+# All functionality related to Cart
+#----------------------------------
 
 
 @login_required
@@ -285,8 +250,77 @@ def confirm_bookings(request):
     return redirect('trips:list')  # or a custom "Thank You" page
 
 
-@login_required
-def add_to_wishlist(request, slug):
-    trip = get_object_or_404(Trip, slug=slug)
-    Wishlist.objects.get_or_create(user=request.user, trip=trip)
-    return redirect('trips:page', slug=slug)
+
+#-------------------------------
+# Pages Only accesible to Guides
+#-------------------------------
+
+
+@login_required(login_url="/users/login/")
+def trip_new(request):
+    # Manually check if user is a guide
+    if not hasattr(request.user, 'guide_profile'):
+        raise PermissionDenied("Only guides can create trips.")
+
+    if request.method == 'POST':
+        form = forms.CreateTrip(request.POST, request.FILES)
+        if form.is_valid():
+            newtrip = form.save(commit=False)
+            newtrip.guide = request.user.guide_profile
+            newtrip.save()
+            messages.success(request, "New trip created successfully!")
+            return redirect('trips:list')
+    else:
+        form = forms.CreateTrip()
+
+    return render(request, 'trips/trip_new.html', { 'form': form })
+
+
+
+@login_required(login_url="/users/login/")
+def edit_trip(request, slug):
+    # Check if the user is a guide
+    if not hasattr(request.user, 'guide_profile'):
+        raise PermissionDenied("Only guides can edit trips.")
+
+    # Ensure the trip belongs to the current guide
+    trip = get_object_or_404(Trip, slug=slug, guide=request.user.guide_profile)
+
+    if request.method == 'POST':
+        form = CreateTrip(request.POST, request.FILES, instance=trip)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Trip information successfully modified!")
+            return redirect('trips:page', slug=trip.slug)
+    else:
+        form = CreateTrip(instance=trip)
+
+    return render(request, 'trips/edit_trip.html', {'form': form, 'trip': trip})
+
+
+
+@login_required(login_url="/users/login/")
+def delete_trip(request, slug):
+    # Check if the user is a guide
+    if not hasattr(request.user, 'guide_profile'):
+        raise PermissionDenied("Only guides can delete trips.")
+
+    # Make sure the trip belongs to the current guide
+    trip = get_object_or_404(Trip, slug=slug, guide=request.user.guide_profile)
+
+    if request.method == 'POST':
+        trip.delete()
+        messages.success(request, "Trip successfully deleted.")
+        return redirect('trips:guide-dashboard')
+
+    return render(request, 'trips/confirm_delete.html', {'trip': trip})
+
+
+
+@login_required(login_url="/users/login/")
+def guide_dashboard(request):
+    if not hasattr(request.user, 'guide_profile'):
+        raise PermissionDenied("Only guides can access this page.")
+
+    trips = Trip.objects.filter(guide=request.user.guide_profile)
+    return render(request, 'trips/guide_dashboard.html', {'trips': trips})

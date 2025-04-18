@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth import login, logout
 from .forms import CustomUserCreationForm
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, user_passes_test
 from .forms import UserUpdateForm
 from trips.models import Payment, Wishlist, Review, ViewedTrip, Trip, Booking
 from django.shortcuts import get_object_or_404
@@ -10,11 +10,15 @@ from django.views.decorators.http import require_POST
 from django.contrib.auth.views import PasswordChangeView
 from django.contrib import messages
 from django.urls import reverse_lazy
-from django.contrib.auth.decorators import user_passes_test
 from django.views.decorators.http import require_POST
 from django.db.models import Prefetch
+from django.core.exceptions import PermissionDenied
 
 # Create your views here.
+
+#------------------------
+# Register, Login, Logout
+#------------------------
 
 
 def register_view(request):
@@ -27,6 +31,7 @@ def register_view(request):
     else:
         form = CustomUserCreationForm()
     return render(request, "users/register.html", { "form":form })
+
 
 
 def login_view(request):
@@ -44,6 +49,7 @@ def login_view(request):
     return render(request, "users/login.html", { "form":form })
 
 
+
 def logout_view(request):
     if request.method == "POST":
         logout(request)
@@ -51,6 +57,12 @@ def logout_view(request):
     else:
         # Always return something
         return redirect("main:home")
+
+
+
+#-------------------------
+# My Account Functionality
+#-------------------------
 
 
 @login_required
@@ -67,6 +79,7 @@ def account_info(request):
     return render(request, 'users/account_info.html', {'form': form})
 
 
+
 class CustomPasswordChangeView(PasswordChangeView):
     template_name = 'users/change_password.html'
     success_url = reverse_lazy('users:account-info')  # redirect to your account info
@@ -77,16 +90,18 @@ class CustomPasswordChangeView(PasswordChangeView):
 
 
 
-
 @login_required
 def my_payments(request):
     payments = Payment.objects.filter(order__user=request.user).select_related('order').prefetch_related('order__bookings__trip')
     return render(request, 'users/my_payments.html', {'payments': payments})
 
+
+
 @login_required
 def my_wishlist(request):
     wishlist_items = Wishlist.objects.filter(user=request.user).select_related('trip')
     return render(request, 'users/my_wishlist.html', {'wishlist_items': wishlist_items})
+
 
 
 @require_POST
@@ -98,13 +113,11 @@ def remove_from_wishlist(request, trip_id):
 
 
 
-
-
-
 @login_required
 def user_reviews(request):
     reviews = Review.objects.filter(user=request.user).select_related('trip').order_by('-created_at')
     return render(request, 'users/user_reviews.html', {'reviews': reviews})
+
 
 
 @login_required
@@ -114,6 +127,7 @@ def delete_review(request, review_id):
     return redirect('users:user-reviews')
 
 
+
 @login_required
 def my_activity(request):
     recent_views = ViewedTrip.objects.filter(user=request.user).order_by('-viewed_at')[:10]
@@ -121,17 +135,22 @@ def my_activity(request):
 
 
 
-
+#-------------------------------
+# Pages Only accesible to Guides
+#-------------------------------
 
 
 def is_guide(user):
     return hasattr(user, 'guide_profile')
 
-@login_required
-@user_passes_test(is_guide)
+@login_required(login_url="/users/login/")
 def all_booked_trips_view(request):
-    # Only trips with at least one booking
-    trips_with_bookings = Trip.objects.filter(booked_trips__isnull=False).distinct().prefetch_related('booked_trips__user')
+    if not is_guide(request.user):
+        raise PermissionDenied  # Shows your 403.html page if it exists
+
+    trips_with_bookings = Trip.objects.filter(
+        booked_trips__isnull=False
+    ).distinct().prefetch_related('booked_trips__user')
 
     return render(request, 'users/all_booked_trips.html', {
         'trips': trips_with_bookings

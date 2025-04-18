@@ -1,15 +1,31 @@
 {% extends "layout.html" %}
 {% load crispy_forms_tags %}
+{% load static %}
 
 {% block title %}Review {{ trip.title }}{% endblock %}
 
 {% block content %}
 <section class="container my-5">
-    <h2>Leave a Review for {{ trip.title }}</h2>
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button class="btn btn-success" type="submit">Submit Review</button>
-    </form>
+    <div class="card rounded-4 shadow-sm">
+        <div class="card-body">
+            <h2 class="card-title mb-4">Leave a Review for {{ trip.title }}</h2>
+            <form class="contact-form" method="post">
+                {% csrf_token %}
+            
+                <!-- Rating Label -->
+                <label for="id_rating" class="form-label">
+                    <h4>Rating: <span id="ratingValue" class="fw-bold ms-2">3</span></h4>
+                </label>
+            
+                {{ form|crispy }}
+            
+                <div class="d-flex justify-content-end mt-3">
+                    <button class="btn btn-success" type="submit">
+                        Submit Review
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
 </section>
 {% endblock %}

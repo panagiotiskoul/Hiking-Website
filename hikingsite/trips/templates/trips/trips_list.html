@@ -109,7 +109,7 @@
             <div class="row">
                 {% for trip in trips %}
                     <div class="col-md-6 col-lg-4 my-3">
-                        <div class="card h-100 rounded-4">
+                        <div class="card h-100 rounded-4 shadow-sm">
                             <a href="{% url 'trips:page' slug=trip.slug %}">
                                 <img src="{{ trip.image.url }}" class="img-fluid rounded-top-4" alt="{{ trip.location }}"/>
                             </a>
