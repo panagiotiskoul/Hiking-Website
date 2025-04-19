@@ -9,7 +9,7 @@
     <h2 class="normal_title">My Info</h2>
     
     <form method="post" class="contact-form margin30">
-        <p>Here you can update your account Info, except your username.</p>
+        <p>You can update your account Info except your username.</p>
         {% csrf_token %}
         {{ form|crispy }}
         <button type="submit" class="btn greenbutton mt-2">Update Info</button>

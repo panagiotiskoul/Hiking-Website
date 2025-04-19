@@ -277,6 +277,13 @@ footer .text-reset {
     margin-right: 15%;
 }
 
+@media (max-width: 575.98px) {
+    .members {
+        margin-left: 1%;
+        margin-right: 1%;
+    }
+}
+
 .about-title {
     margin-left:15%;
 }
@@ -402,8 +409,8 @@ footer .text-reset {
 
 @media (max-width: 768px) {
     .margin30 {
-      margin-left: 10%;
-      margin-right: 10%;
+      margin-left: 1%;
+      margin-right: 1%;
     }
 }
 
