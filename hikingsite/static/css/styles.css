@@ -148,6 +148,13 @@ a {
     padding: 20px;
 }
 
+/* For small screens (less than 576px) */
+@media (max-width: 575.98px) {
+    .hero-section {
+        padding: 16px;
+    }
+}
+
 .welcome-box {
     background: rgba(255, 255, 255, 0.7); /* Initial semi-transparent white */
     opacity: 0.8;
@@ -172,6 +179,15 @@ a {
     text-align: center;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
     transition: background-color 0.3s ease; /* Smooth transition for background-color */
+}
+
+@media (max-width: 575.98px) {
+    .welcome-box {
+        padding: 20px;
+    }
+    .welcome-box-dark {
+        padding: 20px;
+    }
 }
 
 #carouselExampleCaptions {
