@@ -70,11 +70,12 @@
                 </ul>
 
 
-                <!-- Cart Button with Bootstrap Icon -->
-                <div class="nav-btn-container">
+                <div class="d-flex flex-column flex-md-row align-items-center gap-3">
+                    <!-- Cart Button with Bootstrap Icon -->
+                    
                     {% if user.is_authenticated %}
-                    <a href="{% url 'trips:cart' %}" class="greenbutton btn position-relative" aria-label="View cart">
-                        <i class="bi bi-cart-fill me-1"></i> Cart
+                    <a href="{% url 'trips:cart' %}" class="btnav greenbutton btn position-relative" aria-label="View cart">
+                        <i class="bi bi-cart-fill"></i> Cart
                         {% if cart_count and cart_count > 0 %}
                         <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
                             {{ cart_count }}
@@ -83,69 +84,70 @@
                         {% endif %}
                     </a>
                     {% endif %}
-                    <button id="darkModeToggle" class="greenbutton btn ms-3" type="button" aria-label="Toggle dark mode">
+                    <button id="darkModeToggle" class="btnav greenbutton btn" type="button" aria-label="Toggle dark mode">
                         <i class="bi bi-moon"></i> Dark
                     </button>
-                </div>
-
-
-                {% if user.is_authenticated %}
-
                     
 
-                    <div class="dropdown me-3">
-                        <button 
-                            class="btn btn-outline-success dropdown-toggle" 
-                            type="button" 
-                            id="accountDropdown" 
-                            data-bs-toggle="dropdown" 
-                            aria-expanded="false"
-                        >
-                            Account
-                        </button>
-                        <ul class="dropdown-menu" aria-labelledby="accountDropdown">
-                            <li><a class="dropdown-item" href="{% url 'users:account-info' %}">My Information</a></li>
-                            <li><a class="dropdown-item" href="{% url 'users:my-payments' %}">My Payments</a></li>
-                            <li><a class="dropdown-item" href="{% url 'users:account-wishlist' %}">My Wishlist</a></li>
-                            <li><a class="dropdown-item" href="{% url 'users:user-reviews' %}">My Reviews</a></li>
-                            <li><a class="dropdown-item" href="{% url 'users:account-activity' %}">My Activity</a></li>
-                            <li><a class="dropdown-item" href="{% url 'recommender:recommended' %}">Recommendations</a></li>
-                            {% if request.user.is_authenticated and request.user.groups.all.0.name == "Guides" %}
-                                <hr>
-                                <li><a class="dropdown-item text-success" href="{% url 'trips:new-trip' %}">Add Trip</a></li>
-                                <li><a class="dropdown-item text-success" href="{% url 'trips:guide-dashboard' %}">Edit Trip</a></li>
-                                <li><a class="dropdown-item text-success" href="{% url 'users:all-booked' %}">View All Bookings</a></li>
 
-                            {% endif %}
-                            {% if request.user.is_superuser %}
-                                <hr>
-                                <li class="nav-item">
-                                    <a class="dropdown-item text-success" href="{% url 'admin-tools:admin-contact-messages' %}">Manage Messages</a>
-                                    <a class="dropdown-item text-success" href="{% url 'admin-tools:manage-users' %}">Manage Users</a>
-                                    <a class="dropdown-item text-success" href="/admin/">Admin Panel</a>
-                                </li>
-                            {% endif %}
+                    {% if user.is_authenticated %}
 
-                            <!-- Add more items here -->
-                        </ul>
+                        
+
+                        <div class="dropdown">
+                            <button 
+                                class="btnav btn btn-outline-success dropdown-toggle" 
+                                type="button" 
+                                id="accountDropdown" 
+                                data-bs-toggle="dropdown" 
+                                aria-expanded="false"
+                            >
+                                Account
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="accountDropdown">
+                                <li><a class="dropdown-item" href="{% url 'users:account-info' %}">My Information</a></li>
+                                <li><a class="dropdown-item" href="{% url 'users:my-payments' %}">My Payments</a></li>
+                                <li><a class="dropdown-item" href="{% url 'users:account-wishlist' %}">My Wishlist</a></li>
+                                <li><a class="dropdown-item" href="{% url 'users:user-reviews' %}">My Reviews</a></li>
+                                <li><a class="dropdown-item" href="{% url 'users:account-activity' %}">My Activity</a></li>
+                                <li><a class="dropdown-item" href="{% url 'recommender:recommended' %}">Recommendations</a></li>
+                                {% if request.user.is_authenticated and request.user.groups.all.0.name == "Guides" %}
+                                    <hr>
+                                    <li><a class="dropdown-item text-success" href="{% url 'trips:new-trip' %}">Add Trip</a></li>
+                                    <li><a class="dropdown-item text-success" href="{% url 'trips:guide-dashboard' %}">Edit Trip</a></li>
+                                    <li><a class="dropdown-item text-success" href="{% url 'users:all-booked' %}">View All Bookings</a></li>
+
+                                {% endif %}
+                                {% if request.user.is_superuser %}
+                                    <hr>
+                                    <li class="nav-item">
+                                        <a class="dropdown-item text-success" href="{% url 'admin-tools:admin-contact-messages' %}">Manage Messages</a>
+                                        <a class="dropdown-item text-success" href="{% url 'admin-tools:manage-users' %}">Manage Users</a>
+                                        <a class="dropdown-item text-success" href="/admin/">Admin Panel</a>
+                                    </li>
+                                {% endif %}
+
+                                <!-- Add more items here -->
+                            </ul>
+                        </div>
+                    
+                        <!-- Logout Button -->
+                        <div class="nav-btn-container">
+                            <form class="logout" action="{% url 'users:logout' %}" method="post">
+                                {% csrf_token %}
+                                <button type="submit" class="btnav btn btn-outline-success reg-btn" aria-label="Logout">Logout</button>
+                            </form>                    
+                        </div>
+                        
+                        
+                        
+                    {% else %}
+                        <!-- Login Button -->
+                        <div class="btnav nav-btn-container">
+                            <a href="{% url 'users:login' %}?next={{ request.path }}" class="btn btn-outline-success reg-btn" aria-label="Login">Login</a>
+                        </div>
+                    {% endif %}
                     </div>
-                
-                    <!-- Logout Button -->
-                    <div class="nav-btn-container">
-                        <form class="logout" action="{% url 'users:logout' %}" method="post">
-                            {% csrf_token %}
-                            <button type="submit" class="btn btn-outline-success reg-btn" aria-label="Logout">Logout</button>
-                        </form>                    
-                    </div>
-                    
-                    
-                    
-                {% else %}
-                    <!-- Login Button -->
-                    <div class="nav-btn-container">
-                        <a href="{% url 'users:login' %}?next={{ request.path }}" class="btn btn-outline-success reg-btn" aria-label="Login">Login</a>
-                    </div>
-                {% endif %}
             </div>
         </div>
     </nav>

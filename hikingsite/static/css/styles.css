@@ -54,14 +54,10 @@ a {
 }
 
 .navlinks{
-    margin-left: 10%;  
+    margin-left: 8%;  
     margin-right: 10%;
 }
 
-.searchnav {
-    max-width: 200px; /* Set the maximum width of the input field */
-    width: 100%; /* Allow it to expand up to max-width without breaking responsiveness */
-}
 
 /* Apply margin to the search bar only when the navbar collapses (on small screens) */
 @media (max-width: 767px) {
@@ -76,32 +72,27 @@ a {
     padding: 5px;
 }
 
-/* Center the dark mode button when the navbar collapses */
+
 @media (max-width: 767px) {
-    .nav-btn-container {
-        width: 100%;
+    /* 1. Make the wrapper full‑width flex column and center everything */
+    .btnav {
         display: flex;
         justify-content: center;
+        width: 150px;
         
-        margin-bottom: 20px;
-    }
-
-    #darkModeToggle, .reg-btn {
-        display: block;
-        width: fit-content;
+        
+        
     }
 }
-
-/* Add margin to the right of the Dark Mode button on medium and large screens */
-@media (min-width: 768px) {
-    #darkModeToggle, .reg-btn {
-        margin-right: 20px;  /* Adjust the margin as needed */
-    }
-}
-
 
 
 /* Custom Button Colors */
+
+.greenbutton {
+    min-width: 80px;
+}
+
+
 .greenbutton {
     background-color: #01643e;  
     color: white;               /* Text color */
@@ -381,10 +372,6 @@ footer .text-reset {
 
 
 
-/* Filters Trip Page */
-
-
-
 
 /* Login Page */
 .reg {
@@ -409,7 +396,6 @@ footer .text-reset {
 .wrap {
     word-break: break-word;
 }
-
 
 
 
@@ -444,13 +430,6 @@ footer .text-reset {
     border: 2px solid #535a60; /* or white if you want a light outline */
     border-radius: 0.5rem;
 }
-
-
-
-
-
-
-
 
 
 
