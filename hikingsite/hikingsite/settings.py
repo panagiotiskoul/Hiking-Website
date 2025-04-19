@@ -24,9 +24,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-1%3)7uwo&ncp!pq4-6lzyocpe04zal81gzrhs-2z=g^$f3=nqt'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['hikingnorth.pythonanywhere.com']
 
 
 # Application definition
@@ -147,7 +147,7 @@ MESSAGE_TAGS = {
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-CRISPY_TEMPLATE_PACK = "bootstrap5" 
+CRISPY_TEMPLATE_PACK = "bootstrap5"
 
 HANDLER403 = 'main.views.permission_denied_view'
 
